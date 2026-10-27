@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "mappings": [
+    {
+      "scene_id": "scene_00",
+      "panel_id": "panel_000",
+      "confidence": 0.0,
+      "reason": "Replace with local VLM judgement"
+    }
+  ]
+}
