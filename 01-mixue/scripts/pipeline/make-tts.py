@@ -22,7 +22,7 @@ import wave
 
 import edge_tts
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent.parent  # 01-mixue root
 RATE = 48000
 CHANNELS = 2
 SAMPLE_WIDTH = 2
@@ -175,7 +175,7 @@ async def build(a):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--script", type=Path, default=ROOT / "tts.json")
+    ap.add_argument("--script", type=Path, default=ROOT / "config" / "tts.json")
     ap.add_argument("--out", type=Path, default=ROOT / "build")
     ap.add_argument("--lead-in", type=float, default=None, help="silence before the first scene")
     ap.add_argument("--gap", type=float, default=None, help="silence between scenes")

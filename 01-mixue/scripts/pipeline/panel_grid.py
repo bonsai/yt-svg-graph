@@ -182,4 +182,4 @@ def file_sha256(path):
     return h.hexdigest()
 
 
-DEFAULT_SOURCE = Path(__file__).resolve().parent / "MIXUE世界展開ストーリーボード展開.png"
+DEFAULT_SOURCE = Path(__file__).resolve().parent.parent.parent / "assets" / "storyboard.png"

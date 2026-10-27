@@ -5,3 +5,13 @@
 __pycache__/
 *.py[cod]
 .venv/
+01-mixue/scripts/pipeline/__pycache__/
+01-mixue/scripts/legacy/__pycache__/
+
+# IDE / OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Tools
+01-mixue/tools/plantuml.jar

@@ -23,7 +23,7 @@ from PIL import Image
 
 import panel_grid as pg
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent.parent  # 01-mixue root
 
 
 def white_fraction(im, box):
@@ -166,7 +166,9 @@ def main():
                 fail("size_mismatch", f"manifest size {decl} != box size {[box[2]-box[0], box[3]-box[1]]}")
 
             raw = p.get("raw_path")
-            raw_path = a.manifest.parent / raw if raw else None
+            # raw_path in manifest is relative to build/ root
+            build_root = a.manifest.parent.parent.parent
+            raw_path = build_root / raw if raw else None
             if not raw_path or not raw_path.exists():
                 fail("missing_raw", f"raw panel missing: {raw}")
             else:

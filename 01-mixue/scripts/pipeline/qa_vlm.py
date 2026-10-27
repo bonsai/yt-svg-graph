@@ -17,6 +17,7 @@ Usage:
 """
 import argparse
 import base64
+import hashlib
 import json
 import os
 import sys
@@ -26,11 +27,12 @@ from typing import Optional
 import requests
 from PIL import Image
 
-BUILD = Path(__file__).resolve().parent / "build"
-MANIFEST = BUILD / "panel-manifest.json"
-QA_FILE = BUILD / "panel-crop-qa.json"
-VLM_FILE = BUILD / "panel-crop-vlm.json"
-PANEL_DIR = BUILD / "png-panels"
+ROOT = Path(__file__).resolve().parent.parent.parent  # 01-mixue root
+BUILD = ROOT / "build"
+MANIFEST = BUILD / "source" / "manifest" / "panel-manifest.json"
+QA_FILE = BUILD / "source" / "qa" / "panel-crop-qa.json"
+VLM_FILE = BUILD / "source" / "qa" / "panel-crop-vlm.json"
+PANEL_DIR = BUILD / "assets" / "panels"
 
 LMSTUDIO_URL = "http://localhost:1234/v1/chat/completions"
 DEFAULT_MODEL = "tempura-qwen2.5-vl-3b"
@@ -115,6 +117,13 @@ def load_json(path: Path) -> dict:
         return json.load(f)
 
 
+def file_sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(8192), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
 def save_json(path: Path, data: dict):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
@@ -139,6 +148,8 @@ def main():
 
     manifest = load_json(MANIFEST)
     qa = load_json(QA_FILE)
+    source_sha = manifest.get("source_sha256", "")
+    manifest_sha = file_sha256(MANIFEST)
     panels = manifest.get("panels", [])
 
     # Load existing VLM results if any
@@ -190,8 +201,16 @@ def main():
             vlm_results[pid] = verdict
             print(f"{verdict['verdict']} ({verdict['reason'][:50]})")
             # Incremental save
+            overall = "pass"
+            if any(v.get("verdict") == "fail" for v in vlm_results.values()):
+                overall = "fail"
+            elif any(v.get("verdict") == "review" for v in vlm_results.values()):
+                overall = "review"
             save_json(VLM_FILE, {
                 "model": args.model,
+                "source_sha256": source_sha,
+                "manifest_sha256": manifest_sha,
+                "overall": overall,
                 "panels": vlm_results,
                 "summary": {
                     "total": len(vlm_results),
@@ -205,8 +224,16 @@ def main():
             print(f"ERROR: {e}")
             vlm_results[pid] = {"cut": True, "bleed": True, "completeness": False,
                                 "reason": f"VLM error: {e}", "error": str(e), "verdict": "fail"}
+            overall = "fail"
+            if any(v.get("verdict") == "fail" for v in vlm_results.values()):
+                overall = "fail"
+            elif any(v.get("verdict") == "review" for v in vlm_results.values()):
+                overall = "review"
             save_json(VLM_FILE, {
                 "model": args.model,
+                "source_sha256": source_sha,
+                "manifest_sha256": manifest_sha,
+                "overall": overall,
                 "panels": vlm_results,
                 "summary": {
                     "total": len(vlm_results),
@@ -218,8 +245,18 @@ def main():
 
     # Merge with QA for summary
     qa_by_id = {p["panel_id"]: p for p in qa.get("panels", [])}
+
+    overall = "pass"
+    if any(v.get("verdict") == "fail" for v in vlm_results.values()):
+        overall = "fail"
+    elif any(v.get("verdict") == "review" for v in vlm_results.values()):
+        overall = "review"
+
     out = {
         "model": args.model,
+        "source_sha256": source_sha,
+        "manifest_sha256": manifest_sha,
+        "overall": overall,
         "panels": vlm_results,
         "summary": {
             "total": len(vlm_results),

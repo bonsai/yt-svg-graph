@@ -17,7 +17,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 import panel_grid as pg
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent.parent  # 01-mixue root
 
 
 def label_font(size=18):

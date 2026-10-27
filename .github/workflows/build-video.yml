@@ -33,7 +33,7 @@ jobs:
 
       - name: Install Python deps
         run: |
-          pip install -r 01-mixue/requirements.txt
+          pip install -r 01-mixue/config/requirements.txt
           # edge-tts, playwright, pillow, numpy
 
       - name: Install Playwright browsers
@@ -42,12 +42,12 @@ jobs:
       - name: Run TTS (generate audio + timing.json)
         working-directory: 01-mixue
         run: |
-          python make-tts.py
+          python scripts/pipeline/make-tts.py
 
       - name: Extract panels + QA (prepare-only)
         working-directory: 01-mixue
         run: |
-          python png2mov.py --prepare-only
+          python scripts/pipeline/png2mov.py --prepare-only
 
       - name: Verify mechanical QA
         working-directory: 01-mixue
@@ -64,7 +64,7 @@ if qa['overall'] == 'fail':
       - name: Generate PlantUML diagram
         working-directory: 01-mixue
         run: |
-          plantuml -tsvg pipeline.puml -o build/assets/diagrams
+          plantuml -tsvg docs/pipeline.puml -o build/assets/diagrams
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

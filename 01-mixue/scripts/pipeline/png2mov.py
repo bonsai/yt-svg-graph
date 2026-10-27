@@ -21,7 +21,7 @@ from PIL import Image
 
 import panel_grid as pg
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent.parent  # 01-mixue root
 
 
 def run(cmd):
@@ -53,8 +53,8 @@ def write_json(path, data):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--image", type=Path, default=pg.DEFAULT_SOURCE)
-    ap.add_argument("--script", type=Path, default=ROOT / "tts.json")
+    ap.add_argument("--image", type=Path, default=ROOT / "assets" / "storyboard.png")
+    ap.add_argument("--script", type=Path, default=ROOT / "config" / "tts.json")
     ap.add_argument("--timing", type=Path, default=ROOT / "build" / "source" / "timing" / "timing.json")
     ap.add_argument("--out", type=Path, default=ROOT / "build" / "assets" / "video" / "mixue.mp4")
     ap.add_argument("--panel-map", type=Path, default=ROOT / "build" / "source" / "manifest" / "panel-map.json")
@@ -196,7 +196,7 @@ def main():
             "note": "Crop QA happens before this mapping. Mapping is a separate, local-VLM step.",
         },
     }
-    manifest_path = out_dir / "panel-manifest.json"
+    manifest_path = ROOT / "build" / "source" / "manifest" / "panel-manifest.json"
     write_json(manifest_path, manifest)
     print(f"panels: {len(panels)}  grid={manifest['grid']['method']}  -> {manifest_path}")
     for p in panels:
@@ -205,7 +205,8 @@ def main():
 
     # Deterministic QA runs even for --prepare-only so CI fails on bad crops.
     qa_path = ROOT / "build" / "source" / "qa" / "panel-crop-qa.json"
-    qa_cmd = [sys.executable, str(ROOT / "panel_qa.py"), "--image", str(a.image),
+    qa_path.parent.mkdir(parents=True, exist_ok=True)
+    qa_cmd = [sys.executable, str(ROOT / "scripts" / "pipeline" / "panel_qa.py"), "--image", str(a.image),
               "--manifest", str(manifest_path), "--out", str(qa_path)]
     qa = subprocess.run(qa_cmd, text=True)
     if qa.returncode != 0:
@@ -271,7 +272,7 @@ def main():
             nw, nh = (int(x) for x in a.normalized_size.lower().split("x"))
         except ValueError:
             raise SystemExit(f"invalid --normalized-size: {a.normalized_size}")
-        run([sys.executable, str(ROOT / "normalize_panels.py"),
+        run([sys.executable, str(ROOT / "scripts" / "pipeline" / "normalize_panels.py"),
              "--manifest", str(manifest_path), "--out", str(out_dir / "normalized"),
              "--width", str(nw), "--height", str(nh),
              "--mode", a.normalized_mode, "--title", "mux normalized preview"])

@@ -18,7 +18,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 import panel_grid as pg
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent.parent  # 01-mixue root
 
 
 def font(size=16):
@@ -68,8 +68,9 @@ def main():
         if not a.manifest.exists():
             raise SystemExit(f"manifest not found: {a.manifest}")
         manifest = json.loads(a.manifest.read_text(encoding="utf-8"))
-        base = a.manifest.parent
-        files = [base / p["raw_path"] for p in manifest["panels"]]
+        # raw_path in manifest is relative to build/ root
+        build_root = a.manifest.parent.parent.parent
+        files = [build_root / p["raw_path"] for p in manifest["panels"]]
         labels = [p["panel_id"] for p in manifest["panels"]]
         source = manifest.get("source_image", a.manifest.name)
         a.cols = int(manifest.get("grid", {}).get("cols", a.cols))
