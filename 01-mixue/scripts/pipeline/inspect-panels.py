@@ -18,6 +18,7 @@ from PIL import Image, ImageDraw, ImageFont
 import panel_grid as pg
 
 ROOT = Path(__file__).resolve().parent.parent.parent  # 01-mixue root
+BUILD = ROOT / "build"
 
 
 def label_font(size=18):
@@ -129,7 +130,7 @@ col gaps per row: {[s['col_gaps'] for s in grid['strips']]}</p>
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--image", type=Path, default=pg.DEFAULT_SOURCE)
-    ap.add_argument("--out", type=Path, default=ROOT / "build" / "inspect")
+    ap.add_argument("--out", type=Path, default=BUILD / "inspect")
     ap.add_argument("--cols", type=int, default=3)
     ap.add_argument("--rows", type=int, default=3)
     a = ap.parse_args()

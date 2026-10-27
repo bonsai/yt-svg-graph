@@ -1,0 +1,21 @@
+{
+  "model": "tempura-qwen2.5-vl-3b",
+  "source_sha256": "a3a5b22f17628920ffd5af42fd59635c964d3f5edc5264c0f02118852ed8ae5e",
+  "manifest_sha256": "b87b6f6e8b3592de90bfce4981453aa5ab7963117a4ed702906d55cc3fc75e08",
+  "overall": "pass",
+  "panels": {
+    "panel_008": {
+      "cut": false,
+      "bleed": false,
+      "completeness": true,
+      "reason": "The panel is complete and does not show any signs of content truncation or bleeding from adjacent panels.",
+      "verdict": "pass"
+    }
+  },
+  "summary": {
+    "total": 1,
+    "pass": 1,
+    "review": 0,
+    "fail": 0
+  }
+}

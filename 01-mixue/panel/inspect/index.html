@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja"><meta charset="utf-8">
+<title>Panel split inspection</title>
+<style>
+body { font-family: system-ui, sans-serif; margin: 24px; color: #111; }
+h1 { font-size: 20px; } h2 { font-size: 16px; margin-top: 32px; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+figure { margin: 0; border: 1px solid #ddd; padding: 8px; background: #fafafa; }
+figure img { width: 100%; height: auto; display: block; background: #fff; }
+figcaption { font-size: 11px; color: #444; margin-top: 6px; line-height: 1.5; }
+code { font-size: 10px; }
+.legend span { display: inline-block; margin-right: 18px; }
+.sw { display: inline-block; width: 12px; height: 12px; vertical-align: middle; margin-right: 4px; }
+.note { background: #fff8e6; border-left: 4px solid #e0a000; padding: 10px 14px; font-size: 13px; }
+</style>
+<h1>Panel split inspection</h1>
+<p class="legend">
+  <span><span class="sw" style="background:#dc2828"></span>uniform 3×3</span>
+  <span><span class="sw" style="background:#14963c"></span>detected gutters</span>
+</p>
+<p><a href="source-overlay.png" target="_blank"><img src="source-overlay.png" style="max-width:100%;border:1px solid #ddd"></a></p>
+<p class="note">赤 = 現在の等分割。緑 = 白ガター検出。重なっていない場合、等分割はコマ境界と一致していません。<br>
+検出した白ガター: rows=[(392, 399), (689, 694), (997, 1023)]<br>
+cols: [[(522, 524), (1042, 1045)], [(516, 519), (1042, 1045)], [(516, 519), (1043, 1046)]]</p>
+<h2>uniform 3×3（現行 png2mov.py 相当）</h2>
+<div class="grid"><figure><a href="uniform/panel_000.png" target="_blank"><img src="uniform/panel_000.png" alt="panel_000"></a><figcaption>panel_000<br><code>(0, 0, 512, 341)</code><br>512x341 (1.50:1)</figcaption></figure>
+<figure><a href="uniform/panel_001.png" target="_blank"><img src="uniform/panel_001.png" alt="panel_001"></a><figcaption>panel_001<br><code>(512, 0, 1024, 341)</code><br>512x341 (1.50:1)</figcaption></figure>
+<figure><a href="uniform/panel_002.png" target="_blank"><img src="uniform/panel_002.png" alt="panel_002"></a><figcaption>panel_002<br><code>(1024, 0, 1536, 341)</code><br>512x341 (1.50:1)</figcaption></figure>
+<figure><a href="uniform/panel_003.png" target="_blank"><img src="uniform/panel_003.png" alt="panel_003"></a><figcaption>panel_003<br><code>(0, 341, 512, 683)</code><br>512x342 (1.50:1)</figcaption></figure>
+<figure><a href="uniform/panel_004.png" target="_blank"><img src="uniform/panel_004.png" alt="panel_004"></a><figcaption>panel_004<br><code>(512, 341, 1024, 683)</code><br>512x342 (1.50:1)</figcaption></figure>
+<figure><a href="uniform/panel_005.png" target="_blank"><img src="uniform/panel_005.png" alt="panel_005"></a><figcaption>panel_005<br><code>(1024, 341, 1536, 683)</code><br>512x342 (1.50:1)</figcaption></figure>
+<figure><a href="uniform/panel_006.png" target="_blank"><img src="uniform/panel_006.png" alt="panel_006"></a><figcaption>panel_006<br><code>(0, 683, 512, 1024)</code><br>512x341 (1.50:1)</figcaption></figure>
+<figure><a href="uniform/panel_007.png" target="_blank"><img src="uniform/panel_007.png" alt="panel_007"></a><figcaption>panel_007<br><code>(512, 683, 1024, 1024)</code><br>512x341 (1.50:1)</figcaption></figure>
+<figure><a href="uniform/panel_008.png" target="_blank"><img src="uniform/panel_008.png" alt="panel_008"></a><figcaption>panel_008<br><code>(1024, 683, 1536, 1024)</code><br>512x341 (1.50:1)</figcaption></figure></div>
+<h2>detected（境界検出）</h2><div class="grid"><figure><a href="detected/panel_000.png" target="_blank"><img src="detected/panel_000.png" alt="panel_000"></a><figcaption>panel_000<br><code>(0, 0, 522, 392)</code><br>522x392 (1.33:1)</figcaption></figure>
+<figure><a href="detected/panel_001.png" target="_blank"><img src="detected/panel_001.png" alt="panel_001"></a><figcaption>panel_001<br><code>(525, 0, 1042, 392)</code><br>517x392 (1.32:1)</figcaption></figure>
+<figure><a href="detected/panel_002.png" target="_blank"><img src="detected/panel_002.png" alt="panel_002"></a><figcaption>panel_002<br><code>(1046, 0, 1536, 392)</code><br>490x392 (1.25:1)</figcaption></figure>
+<figure><a href="detected/panel_003.png" target="_blank"><img src="detected/panel_003.png" alt="panel_003"></a><figcaption>panel_003<br><code>(0, 400, 516, 689)</code><br>516x289 (1.79:1)</figcaption></figure>
+<figure><a href="detected/panel_004.png" target="_blank"><img src="detected/panel_004.png" alt="panel_004"></a><figcaption>panel_004<br><code>(520, 400, 1042, 689)</code><br>522x289 (1.81:1)</figcaption></figure>
+<figure><a href="detected/panel_005.png" target="_blank"><img src="detected/panel_005.png" alt="panel_005"></a><figcaption>panel_005<br><code>(1046, 400, 1536, 689)</code><br>490x289 (1.70:1)</figcaption></figure>
+<figure><a href="detected/panel_006.png" target="_blank"><img src="detected/panel_006.png" alt="panel_006"></a><figcaption>panel_006<br><code>(0, 695, 516, 997)</code><br>516x302 (1.71:1)</figcaption></figure>
+<figure><a href="detected/panel_007.png" target="_blank"><img src="detected/panel_007.png" alt="panel_007"></a><figcaption>panel_007<br><code>(520, 695, 1043, 997)</code><br>523x302 (1.73:1)</figcaption></figure>
+<figure><a href="detected/panel_008.png" target="_blank"><img src="detected/panel_008.png" alt="panel_008"></a><figcaption>panel_008<br><code>(1047, 695, 1536, 997)</code><br>489x302 (1.62:1)</figcaption></figure></div>
+</html>

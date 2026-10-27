@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "mappings": [
+    {"scene_id": "scene_00", "panel_id": "panel_000"},
+    {"scene_id": "scene_01", "panel_id": "panel_001"},
+    {"scene_id": "scene_02", "panel_id": "panel_002"},
+    {"scene_id": "scene_03", "panel_id": "panel_003"},
+    {"scene_id": "scene_04", "panel_id": "panel_004"},
+    {"scene_id": "scene_05", "panel_id": "panel_005"},
+    {"scene_id": "scene_06", "panel_id": "panel_006"},
+    {"scene_id": "scene_07", "panel_id": "panel_007"}
+  ]
+}

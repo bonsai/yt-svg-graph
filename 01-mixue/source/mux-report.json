@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "output": "mixue.mp4",
+  "timing_source": "measured-audio",
+  "expected_duration": 139.036,
+  "video_duration": 139.033333,
+  "audio_duration": 139.036,
+  "audio_file": "narration.wav",
+  "audio_video_drift": 0.002667,
+  "tolerance": 0.12,
+  "qa": {
+    "crop": "review",
+    "vlm": "pass"
+  },
+  "mapping": "panel-map.json",
+  "scenes": [
+    {
+      "scene_id": "scene_00",
+      "panel_id": "panel_000",
+      "display_start": 0.0,
+      "display_end": 11.428,
+      "display_duration": 11.428
+    },
+    {
+      "scene_id": "scene_01",
+      "panel_id": "panel_001",
+      "display_start": 11.028,
+      "display_end": 22.532,
+      "display_duration": 11.504
+    },
+    {
+      "scene_id": "scene_02",
+      "panel_id": "panel_002",
+      "display_start": 22.132,
+      "display_end": 42.156,
+      "display_duration": 20.024
+    },
+    {
+      "scene_id": "scene_03",
+      "panel_id": "panel_003",
+      "display_start": 41.756,
+      "display_end": 61.108,
+      "display_duration": 19.352
+    },
+    {
+      "scene_id": "scene_04",
+      "panel_id": "panel_004",
+      "display_start": 60.708,
+      "display_end": 79.316,
+      "display_duration": 18.608
+    },
+    {
+      "scene_id": "scene_05",
+      "panel_id": "panel_005",
+      "display_start": 78.916,
+      "display_end": 95.34,
+      "display_duration": 16.424
+    },
+    {
+      "scene_id": "scene_06",
+      "panel_id": "panel_006",
+      "display_start": 94.94,
+      "display_end": 116.26,
+      "display_duration": 21.32
+    },
+    {
+      "scene_id": "scene_07",
+      "panel_id": "panel_007",
+      "display_start": 115.86,
+      "display_end": 139.036,
+      "display_duration": 23.176
+    }
+  ],
+  "ok": true
+}

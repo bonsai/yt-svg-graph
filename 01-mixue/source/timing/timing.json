@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0",
+  "source": "measured-audio",
+  "script": "tts.json",
+  "voice": "ja-JP-NanamiNeural",
+  "rate": 48000,
+  "channels": 2,
+  "lead_in": 0.3,
+  "gap": 0.4,
+  "tail": 0.6,
+  "total_duration": 139.036,
+  "narration": {
+    "wav": "narration.wav",
+    "mp3": "narration.mp3"
+  },
+  "scenes": [
+    {
+      "scene_id": "scene_00",
+      "index": 0,
+      "text_sha256": "df45114635227793",
+      "audio": "voice/voice_00.mp3",
+      "duration": 10.728,
+      "start": 0.3,
+      "end": 11.028,
+      "display_start": 0.0,
+      "display_end": 11.428,
+      "display_duration": 11.428
+    },
+    {
+      "scene_id": "scene_01",
+      "index": 1,
+      "text_sha256": "5e9bace656df6b68",
+      "audio": "voice/voice_01.mp3",
+      "duration": 10.704,
+      "start": 11.428,
+      "end": 22.132,
+      "display_start": 11.028,
+      "display_end": 22.532,
+      "display_duration": 11.504
+    },
+    {
+      "scene_id": "scene_02",
+      "index": 2,
+      "text_sha256": "5a9a0155176986aa",
+      "audio": "voice/voice_02.mp3",
+      "duration": 19.224,
+      "start": 22.532,
+      "end": 41.756,
+      "display_start": 22.132,
+      "display_end": 42.156,
+      "display_duration": 20.024
+    },
+    {
+      "scene_id": "scene_03",
+      "index": 3,
+      "text_sha256": "70dec4b567512a55",
+      "audio": "voice/voice_03.mp3",
+      "duration": 18.552,
+      "start": 42.156,
+      "end": 60.708,
+      "display_start": 41.756,
+      "display_end": 61.108,
+      "display_duration": 19.352
+    },
+    {
+      "scene_id": "scene_04",
+      "index": 4,
+      "text_sha256": "0a42623456c9485f",
+      "audio": "voice/voice_04.mp3",
+      "duration": 17.808,
+      "start": 61.108,
+      "end": 78.916,
+      "display_start": 60.708,
+      "display_end": 79.316,
+      "display_duration": 18.608
+    },
+    {
+      "scene_id": "scene_05",
+      "index": 5,
+      "text_sha256": "b68d8dfe052ed658",
+      "audio": "voice/voice_05.mp3",
+      "duration": 15.624,
+      "start": 79.316,
+      "end": 94.94,
+      "display_start": 78.916,
+      "display_end": 95.34,
+      "display_duration": 16.424
+    },
+    {
+      "scene_id": "scene_06",
+      "index": 6,
+      "text_sha256": "aaaa7cfef092a9a4",
+      "audio": "voice/voice_06.mp3",
+      "duration": 20.52,
+      "start": 95.34,
+      "end": 115.86,
+      "display_start": 94.94,
+      "display_end": 116.26,
+      "display_duration": 21.32
+    },
+    {
+      "scene_id": "scene_07",
+      "index": 7,
+      "text_sha256": "ecc9f236587b8d3d",
+      "audio": "voice/voice_07.mp3",
+      "duration": 22.176,
+      "start": 116.26,
+      "end": 138.436,
+      "display_start": 115.86,
+      "display_end": 139.036,
+      "display_duration": 23.176
+    }
+  ]
+}

@@ -24,6 +24,7 @@ from PIL import Image
 import panel_grid as pg
 
 ROOT = Path(__file__).resolve().parent.parent.parent  # 01-mixue root
+BUILD = ROOT / "build"
 
 
 def white_fraction(im, box):
@@ -83,8 +84,8 @@ def area(box):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--image", type=Path, default=pg.DEFAULT_SOURCE)
-    ap.add_argument("--manifest", type=Path, default=ROOT / "build" / "panel-manifest.json")
-    ap.add_argument("--out", type=Path, default=ROOT / "build" / "panel-crop-qa.json")
+    ap.add_argument("--manifest", type=Path, default=BUILD / "manifest.json")
+    ap.add_argument("--out", type=Path, default=BUILD / "qa.json")
     ap.add_argument("--max-aspect-spread", type=float, default=0.25,
                     help="review when max/min panel aspect exceeds this spread")
     ap.add_argument("--max-gutter-ratio", type=float, default=0.035,
@@ -166,9 +167,8 @@ def main():
                 fail("size_mismatch", f"manifest size {decl} != box size {[box[2]-box[0], box[3]-box[1]]}")
 
             raw = p.get("raw_path")
-            # raw_path in manifest is relative to build/ root
-            build_root = a.manifest.parent.parent.parent
-            raw_path = build_root / raw if raw else None
+            # raw_path in manifest is relative to build/
+            raw_path = BUILD / raw if raw else None
             if not raw_path or not raw_path.exists():
                 fail("missing_raw", f"raw panel missing: {raw}")
             else:
@@ -230,6 +230,15 @@ def main():
     overall = "fail" if any(i["level"] == "fail" for i in issues) else (
         "review" if any(i["level"] == "review" for i in issues) else "pass")
 
+    # Preserve existing VLM data if present
+    existing = {}
+    if a.out.exists():
+        try:
+            existing = json.loads(a.out.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    vlm_data = existing.get("vlm", {})
+
     report = {
         "schema_version": "1.0",
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -248,6 +257,8 @@ def main():
         "panels": checks,
         "issues": issues,
     }
+    if vlm_data:
+        report["vlm"] = vlm_data
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 

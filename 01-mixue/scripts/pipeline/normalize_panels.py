@@ -19,6 +19,7 @@ from PIL import Image, ImageDraw, ImageFont
 import panel_grid as pg
 
 ROOT = Path(__file__).resolve().parent.parent.parent  # 01-mixue root
+BUILD = ROOT / "build"
 
 
 def font(size=16):
@@ -49,10 +50,10 @@ def normalize(im, size, mode, bg=(255, 255, 255)):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--manifest", type=Path, default=ROOT / "build" / "panel-manifest.json")
+    ap.add_argument("--manifest", type=Path, default=BUILD / "manifest.json")
     ap.add_argument("--panels-dir", type=Path, default=None,
                     help="use panel_*.png from this directory instead of a manifest")
-    ap.add_argument("--out", type=Path, default=ROOT / "build" / "normalized")
+    ap.add_argument("--out", type=Path, default=BUILD / "normalized")
     ap.add_argument("--width", type=int, default=640)
     ap.add_argument("--height", type=int, default=360)
     ap.add_argument("--mode", choices=("fill", "cover", "contain"), default="fill")
@@ -68,9 +69,8 @@ def main():
         if not a.manifest.exists():
             raise SystemExit(f"manifest not found: {a.manifest}")
         manifest = json.loads(a.manifest.read_text(encoding="utf-8"))
-        # raw_path in manifest is relative to build/ root
-        build_root = a.manifest.parent.parent.parent
-        files = [build_root / p["raw_path"] for p in manifest["panels"]]
+        # raw_path in manifest is relative to build/
+        files = [BUILD / p["raw_path"] for p in manifest["panels"]]
         labels = [p["panel_id"] for p in manifest["panels"]]
         source = manifest.get("source_image", a.manifest.name)
         a.cols = int(manifest.get("grid", {}).get("cols", a.cols))

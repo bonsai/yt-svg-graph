@@ -1,0 +1,252 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-10-27T02:25:30+00:00",
+  "source_image": "MIXUE世界展開ストーリーボード展開.png",
+  "source_sha256": "a3a5b22f17628920ffd5af42fd59635c964d3f5edc5264c0f02118852ed8ae5e",
+  "manifest": "panel-manifest.json",
+  "manifest_sha256": "b87b6f6e8b3592de90bfce4981453aa5ab7963117a4ed702906d55cc3fc75e08",
+  "grid": {
+    "cols": 3,
+    "rows": 3,
+    "method": "detected",
+    "detected_ok": true,
+    "detection_reasons": [],
+    "row_gaps": [
+      [
+        392,
+        399
+      ],
+      [
+        689,
+        694
+      ],
+      [
+        997,
+        1023
+      ]
+    ],
+    "strips": [
+      {
+        "y": [
+          0,
+          392
+        ],
+        "col_gaps": [
+          [
+            522,
+            524
+          ],
+          [
+            1042,
+            1045
+          ]
+        ]
+      },
+      {
+        "y": [
+          400,
+          689
+        ],
+        "col_gaps": [
+          [
+            516,
+            519
+          ],
+          [
+            1042,
+            1045
+          ]
+        ]
+      },
+      {
+        "y": [
+          695,
+          997
+        ],
+        "col_gaps": [
+          [
+            516,
+            519
+          ],
+          [
+            1043,
+            1046
+          ]
+        ]
+      }
+    ]
+  },
+  "policy": {
+    "content_trim": "forbid",
+    "gutter_crossing": "fail",
+    "max_aspect_spread": 0.25
+  },
+  "counts": {
+    "pass": 9,
+    "review": 0,
+    "fail": 0
+  },
+  "overall": "review",
+  "panels": [
+    {
+      "panel_id": "panel_000",
+      "box": [
+        0,
+        0,
+        522,
+        392
+      ],
+      "verdict": "pass",
+      "checks": [
+        {
+          "level": "pass",
+          "code": "edge_ring",
+          "message": "98% white edge ring"
+        }
+      ]
+    },
+    {
+      "panel_id": "panel_001",
+      "box": [
+        525,
+        0,
+        1042,
+        392
+      ],
+      "verdict": "pass",
+      "checks": [
+        {
+          "level": "pass",
+          "code": "edge_ring",
+          "message": "99% white edge ring"
+        }
+      ]
+    },
+    {
+      "panel_id": "panel_002",
+      "box": [
+        1046,
+        0,
+        1536,
+        392
+      ],
+      "verdict": "pass",
+      "checks": [
+        {
+          "level": "pass",
+          "code": "edge_ring",
+          "message": "100% white edge ring"
+        }
+      ]
+    },
+    {
+      "panel_id": "panel_003",
+      "box": [
+        0,
+        400,
+        516,
+        689
+      ],
+      "verdict": "pass",
+      "checks": [
+        {
+          "level": "pass",
+          "code": "edge_ring",
+          "message": "95% white edge ring"
+        }
+      ]
+    },
+    {
+      "panel_id": "panel_004",
+      "box": [
+        520,
+        400,
+        1042,
+        689
+      ],
+      "verdict": "pass",
+      "checks": [
+        {
+          "level": "pass",
+          "code": "edge_ring",
+          "message": "99% white edge ring"
+        }
+      ]
+    },
+    {
+      "panel_id": "panel_005",
+      "box": [
+        1046,
+        400,
+        1536,
+        689
+      ],
+      "verdict": "pass",
+      "checks": [
+        {
+          "level": "pass",
+          "code": "edge_ring",
+          "message": "96% white edge ring"
+        }
+      ]
+    },
+    {
+      "panel_id": "panel_006",
+      "box": [
+        0,
+        695,
+        516,
+        997
+      ],
+      "verdict": "pass",
+      "checks": [
+        {
+          "level": "pass",
+          "code": "edge_ring",
+          "message": "92% white edge ring"
+        }
+      ]
+    },
+    {
+      "panel_id": "panel_007",
+      "box": [
+        520,
+        695,
+        1043,
+        997
+      ],
+      "verdict": "pass",
+      "checks": [
+        {
+          "level": "pass",
+          "code": "edge_ring",
+          "message": "99% white edge ring"
+        }
+      ]
+    },
+    {
+      "panel_id": "panel_008",
+      "box": [
+        1047,
+        695,
+        1536,
+        997
+      ],
+      "verdict": "pass",
+      "checks": [
+        {
+          "level": "pass",
+          "code": "edge_ring",
+          "message": "97% white edge ring"
+        }
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "level": "review",
+      "code": "aspect_spread",
+      "message": "panel aspect spread 44% exceeds 25%"
+    }
+  ]
+}

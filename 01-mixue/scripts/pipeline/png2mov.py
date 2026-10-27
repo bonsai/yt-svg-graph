@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
 """Extract storyboard panels and mux them against measured narration timing.
 
-Stages:
-
-1. detect the 3x3 panel rectangles (white gutters, per row) or use a uniform grid
-2. write raw crops (used by QA/VLM) and 16:9 display frames (contain = no crop)
-3. record rectangles, hashes and display fit in panel-manifest.json
-4. run deterministic crop QA; a fail stops the render
-5. require a local-VLM crop verdict for rendering (override with --allow-unverified)
-6. build the video from build/timing.json (measured audio), then mux narration
-7. verify video/audio durations and write mux-report.json
+Simplified flat build/ structure:
+  build/
+    video/<name>.mp4
+    audio/narration.wav, narration.mp3
+    panels/panel_XXX.png       # raw crops for QA/VLM
+    frames/panel_XXX.png       # 16:9 display frames (contain)
+    manifest.json              # panels + scene timing + mapping
+    qa.json                    # mechanical QA + VLM verdict
+    timing.json                # measured audio timing
+    mux-report.json            # duration verification
+    tts/cache.json
+    tts/voice/voice_XX.mp3/.wav
+    normalized/panel_XXX.png   # equal W/H preview
+    inspect/                   # comparison galleries
 """
 from pathlib import Path
 import argparse
@@ -22,6 +27,7 @@ from PIL import Image
 import panel_grid as pg
 
 ROOT = Path(__file__).resolve().parent.parent.parent  # 01-mixue root
+BUILD = ROOT / "build"
 
 
 def run(cmd):
@@ -55,9 +61,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--image", type=Path, default=ROOT / "assets" / "storyboard.png")
     ap.add_argument("--script", type=Path, default=ROOT / "config" / "tts.json")
-    ap.add_argument("--timing", type=Path, default=ROOT / "build" / "source" / "timing" / "timing.json")
-    ap.add_argument("--out", type=Path, default=ROOT / "build" / "assets" / "video" / "mixue.mp4")
-    ap.add_argument("--panel-map", type=Path, default=ROOT / "build" / "source" / "manifest" / "panel-map.json")
+    ap.add_argument("--timing", type=Path, default=BUILD / "timing.json")
+    ap.add_argument("--out", type=Path, default=BUILD / "video" / "mixue.mp4")
     ap.add_argument("--prepare-only", action="store_true",
                     help="extract panels, manifest and QA only")
     ap.add_argument("--grid", choices=("detect", "uniform"), default="detect")
@@ -71,11 +76,11 @@ def main():
     ap.add_argument("--allow-script-timing", action="store_true",
                     help="fall back to tts.json start/end when timing.json is missing")
     ap.add_argument("--allow-unverified", action="store_true",
-                    help="render even without a local-VLM crop verdict (preview only)")
+                    help="render even without VLM verdict (preview only)")
     ap.add_argument("--allow-review", action="store_true",
                     help="render when QA is review instead of pass")
     ap.add_argument("--no-normalized", action="store_true",
-                    help="skip the equal-width/height preview set at mux time")
+                    help="skip equal-width/height preview set at mux time")
     ap.add_argument("--normalized-size", default="640x360")
     ap.add_argument("--normalized-mode", choices=("fill", "cover", "contain"), default="fill")
     a = ap.parse_args()
@@ -94,10 +99,11 @@ def main():
         "reasons": ["uniform grid requested"], "boxes": [],
     }
     if a.grid == "detect" and not grid["ok"]:
-        print("WARNING: gutter detection failed, falling back to a uniform grid:")
+        print("WARNING: gutter detection failed, falling back to uniform grid:")
         for reason in grid["reasons"]:
             print("  -", reason)
     boxes = grid["boxes"] if grid["ok"] else pg.uniform_boxes(width, height, a.cols, a.rows)
+
     if len(boxes) != a.cols * a.rows:
         raise SystemExit(f"expected {a.cols*a.rows} panels, got {len(boxes)}")
 
@@ -113,12 +119,11 @@ def main():
     elif not a.prepare_only and not a.allow_script_timing:
         raise SystemExit(
             f"measured timing required for muxing: {a.timing}\n"
-            "run `python make-tts.py` first, or pass --allow-script-timing for a rough cut"
+            "run `make-tts.py` first, or pass --allow-script-timing for rough cut"
         )
 
-    out_dir = a.out.parent
-    panels_dir = ROOT / "build" / "assets" / "panels"
-    frames_dir = ROOT / "build" / "assets" / "frames"
+    panels_dir = BUILD / "panels"
+    frames_dir = BUILD / "frames"
     panels_dir.mkdir(parents=True, exist_ok=True)
     frames_dir.mkdir(parents=True, exist_ok=True)
 
@@ -139,9 +144,9 @@ def main():
             "source_box": list(box),
             "source_size": [box[2] - box[0], box[3] - box[1]],
             "aspect": round((box[2] - box[0]) / (box[3] - box[1]), 4),
-            "raw_path": raw_path.relative_to(ROOT / "build").as_posix(),
+            "raw_path": raw_path.relative_to(BUILD).as_posix(),
             "raw_sha256": pg.file_sha256(raw_path),
-            "frame_path": frame_path.relative_to(ROOT / "build").as_posix(),
+            "frame_path": frame_path.relative_to(BUILD).as_posix(),
             "display": display,
         })
 
@@ -184,33 +189,21 @@ def main():
             }
             for i, scene in enumerate(scenes)
         ],
-        "qa": {
-            "crop": "source/qa/panel-crop-qa.json",
-            "vlm": "source/qa/panel-crop-vlm.json",
-            "render_requires": ["crop:pass", "vlm:pass"],
-        },
-        "mapping_contract": {
-            "file": a.panel_map.name,
-            "shape": {"mappings": [{"scene_id": "scene_00", "panel_id": "panel_004",
-                                    "confidence": 0.95, "reason": "short rationale"}]},
-            "note": "Crop QA happens before this mapping. Mapping is a separate, local-VLM step.",
-        },
     }
-    manifest_path = ROOT / "build" / "source" / "manifest" / "panel-manifest.json"
+    manifest_path = BUILD / "manifest.json"
     write_json(manifest_path, manifest)
     print(f"panels: {len(panels)}  grid={manifest['grid']['method']}  -> {manifest_path}")
     for p in panels:
         print(f"  {p['panel_id']} box={p['source_box']} {p['source_size'][0]}x{p['source_size'][1]} "
               f"aspect={p['aspect']} padded={p['display']['padded_px']} cropped={p['display']['cropped_px']}")
 
-    # Deterministic QA runs even for --prepare-only so CI fails on bad crops.
-    qa_path = ROOT / "build" / "source" / "qa" / "panel-crop-qa.json"
-    qa_path.parent.mkdir(parents=True, exist_ok=True)
-    qa_cmd = [sys.executable, str(ROOT / "scripts" / "pipeline" / "panel_qa.py"), "--image", str(a.image),
-              "--manifest", str(manifest_path), "--out", str(qa_path)]
+    # Deterministic QA
+    qa_path = BUILD / "qa.json"
+    qa_cmd = [sys.executable, str(ROOT / "scripts" / "pipeline" / "panel_qa.py"),
+              "--image", str(a.image), "--manifest", str(manifest_path), "--out", str(qa_path)]
     qa = subprocess.run(qa_cmd, text=True)
     if qa.returncode != 0:
-        raise SystemExit("crop QA failed; see panel-crop-qa.json (render stopped)")
+        raise SystemExit("crop QA failed; see qa.json (render stopped)")
     qa_report = load_json(qa_path)
 
     if a.prepare_only:
@@ -220,28 +213,20 @@ def main():
     if qa_report["overall"] != "pass" and not a.allow_review:
         raise SystemExit(f"crop QA is {qa_report['overall']}; pass --allow-review to render anyway")
 
-    vlm_path = ROOT / "build" / "source" / "qa" / "panel-crop-vlm.json"
-    vlm_state = "missing"
-    if vlm_path.exists():
-        vlm = load_json(vlm_path)
-        if vlm.get("source_sha256") != source_sha or vlm.get("manifest_sha256") != pg.file_sha256(manifest_path):
-            vlm_state = "stale"
-            print("WARNING: VLM verdict is stale (source or manifest changed)")
-        elif vlm.get("overall") == "fail":
-            raise SystemExit("VLM crop verdict is fail; fix the crops before rendering")
-        elif vlm.get("overall") == "review" and not a.allow_review:
-            raise SystemExit("VLM crop verdict is review; pass --allow-review to render anyway")
-        else:
-            vlm_state = vlm.get("overall", "unknown")
-    if vlm_state in ("missing", "stale"):
-        if not a.allow_unverified:
-            raise SystemExit(
-                f"local-VLM crop verdict required ({vlm_state}): {vlm_path}\n"
-                "run `python qa_vlm.py`, or pass --allow-unverified for a preview render"
-            )
-        print("WARNING: rendering without a VLM crop verdict (--allow-unverified)")
+    # Load VLM verdict (merged into qa.json by qa_vlm.py)
+    qa = load_json(qa_path)
+    vlm_state = qa.get("vlm", {}).get("overall", "missing")
+    if vlm_state == "fail":
+        raise SystemExit("VLM crop verdict is fail; fix the crops before rendering")
+    if vlm_state == "review" and not a.allow_review:
+        raise SystemExit("VLM crop verdict is review; pass --allow-review to render anyway")
+    if vlm_state in ("missing", "stale") and not a.allow_unverified:
+        raise SystemExit(
+            f"VLM crop verdict required ({vlm_state}): {qa_path}\n"
+            "run `qa_vlm.py`, or pass --allow-unverified for preview"
+        )
 
-    # --- timing -------------------------------------------------------------
+    # Timing
     if timing_scenes:
         total_duration = float(timing["total_duration"])
         display = [(s["display_start"], s["display_end"]) for s in timing_scenes]
@@ -250,52 +235,57 @@ def main():
         display = [(float(s["start"]), float(s["end"])) for s in scenes]
         print("WARNING: using script timing, not measured audio")
 
-    mapping_data = load_json(a.panel_map) if a.panel_map.exists() else None
-    if not mapping_data:
-        raise SystemExit(
-            f"scene -> panel mapping required: {a.panel_map}\n"
-            "run `python qa_vlm.py --map` (or write the JSON by hand) after crop QA passes"
-        )
-    mapping = {item["scene_id"]: item["panel_id"] for item in mapping_data.get("mappings", [])}
     scene_ids = [f"scene_{i:02d}" for i in range(len(scenes))]
+    # Load panel-map.json and merge into manifest
+    panel_map_path = BUILD / "panel-map.json"
+    if panel_map_path.exists():
+        panel_map = load_json(panel_map_path)
+        pm = {m["scene_id"]: m["panel_id"] for m in panel_map.get("mappings", [])}
+        for s in manifest.get("scenes", []):
+            sid = s["scene_id"]
+            if sid in pm:
+                s["panel_id"] = pm[sid]
+    # Mapping from manifest (panel-map merged in)
+    mapping = {s["scene_id"]: s.get("panel_id") for s in manifest.get("scenes", [])}
     if set(mapping) != set(scene_ids):
-        raise SystemExit(f"panel-map.json must cover every scene; expected {scene_ids}")
+        raise SystemExit(f"manifest.scenes missing panel_id for some scenes; expected {scene_ids}")
     valid = {p["panel_id"] for p in panels}
     if not set(mapping.values()).issubset(valid):
-        raise SystemExit(f"panel-map.json references unknown panels: {sorted(valid)}")
-    if len(set(mapping.values())) != len(mapping):
-        raise SystemExit("panel-map.json currently requires a unique panel for each scene")
+        raise SystemExit(f"manifest.scenes references unknown panels: {sorted(valid)}")
 
-    # Equal-width/height preview set, generated at mux time (originals untouched).
+    # Normalized preview
     if not a.no_normalized:
         try:
             nw, nh = (int(x) for x in a.normalized_size.lower().split("x"))
         except ValueError:
             raise SystemExit(f"invalid --normalized-size: {a.normalized_size}")
         run([sys.executable, str(ROOT / "scripts" / "pipeline" / "normalize_panels.py"),
-             "--manifest", str(manifest_path), "--out", str(out_dir / "normalized"),
+             "--manifest", str(manifest_path), "--out", str(BUILD / "normalized"),
              "--width", str(nw), "--height", str(nh),
              "--mode", a.normalized_mode, "--title", "mux normalized preview"])
 
-    # --- concat video -------------------------------------------------------
-    list_file = out_dir / "png-scenes.txt"
+    # Concat video
+    list_file = BUILD / "png-scenes.txt"
     lines = []
     for scene_id, (d0, d1) in zip(scene_ids, display):
         duration = d1 - d0
         if duration <= 0:
             raise SystemExit(f"invalid display duration for {scene_id}: {duration}")
         panel_index = int(mapping[scene_id].split("_")[1])
-        frame_path = (ROOT / "build" / panels[panel_index]["frame_path"]).resolve()
+        frame_path = (BUILD / panels[panel_index]["frame_path"]).resolve()
         lines.extend([f"file '{frame_path.as_posix()}'", f"duration {duration:.6f}"])
     last_index = int(mapping[scene_ids[-1]].split("_")[1])
-    lines.append(f"file '{(ROOT / "build" / panels[last_index]['frame_path']).resolve().as_posix()}'")
+    lines.append(f"file '{(BUILD / panels[last_index]['frame_path']).resolve().as_posix()}'")
     list_file.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-    audio = ROOT / "build" / "assets" / "audio" / "narration.wav"
+    audio = BUILD / "audio" / "narration.wav"
     if not audio.exists():
-        audio = ROOT / "build" / "assets" / "audio" / "narration.mp3"
+        audio = BUILD / "audio" / "narration.mp3"
     if not audio.exists():
         raise SystemExit("narration.wav/mp3 not found; run make-tts.py first")
+
+    a.out.parent.mkdir(parents=True, exist_ok=True)
+    (BUILD / "video").mkdir(parents=True, exist_ok=True)
 
     silent = a.out.with_name(a.out.stem + "-silent.mp4")
     run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", list_file,
@@ -323,7 +313,6 @@ def main():
         "audio_video_drift": round(drift, 6) if drift is not None else None,
         "tolerance": tolerance,
         "qa": {"crop": qa_report["overall"], "vlm": vlm_state},
-        "mapping": a.panel_map.name,
         "scenes": [
             {"scene_id": sid, "panel_id": mapping[sid],
              "display_start": round(d0, 3), "display_end": round(d1, 3),
@@ -335,13 +324,12 @@ def main():
                    and abs(audio_duration - total_duration) <= tolerance
                    and abs(drift) <= tolerance),
     }
-    write_json(ROOT / "build" / "source" / "mux-report.json", report)
+    write_json(BUILD / "mux-report.json", report)
     print(f"mux: video={video_duration:.3f}s audio={audio_duration:.3f}s "
           f"expected={total_duration:.3f}s drift={drift:+.4f}s -> {a.out}")
     if not report["ok"]:
         raise SystemExit("duration verification failed; see mux-report.json")
     print(f"created {a.out}")
-    print(f"report -> {ROOT / "build" / "source" / "mux-report.json"}")
 
 
 if __name__ == "__main__":

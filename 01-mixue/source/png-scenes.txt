@@ -1,0 +1,17 @@
+file 'C:/Users/0501JP/yt-svg-graph/01-mixue/build/frames/panel_000.png'
+duration 11.428000
+file 'C:/Users/0501JP/yt-svg-graph/01-mixue/build/frames/panel_001.png'
+duration 11.504000
+file 'C:/Users/0501JP/yt-svg-graph/01-mixue/build/frames/panel_002.png'
+duration 20.024000
+file 'C:/Users/0501JP/yt-svg-graph/01-mixue/build/frames/panel_003.png'
+duration 19.352000
+file 'C:/Users/0501JP/yt-svg-graph/01-mixue/build/frames/panel_004.png'
+duration 18.608000
+file 'C:/Users/0501JP/yt-svg-graph/01-mixue/build/frames/panel_005.png'
+duration 16.424000
+file 'C:/Users/0501JP/yt-svg-graph/01-mixue/build/frames/panel_006.png'
+duration 21.320000
+file 'C:/Users/0501JP/yt-svg-graph/01-mixue/build/frames/panel_007.png'
+duration 23.176000
+file 'C:/Users/0501JP/yt-svg-graph/01-mixue/build/frames/panel_007.png'

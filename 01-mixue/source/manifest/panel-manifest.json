@@ -1,0 +1,584 @@
+{
+  "schema_version": "2.0",
+  "source_image": "MIXUE世界展開ストーリーボード展開.png",
+  "source_sha256": "a3a5b22f17628920ffd5af42fd59635c964d3f5edc5264c0f02118852ed8ae5e",
+  "source_size": {
+    "width": 1536,
+    "height": 1024
+  },
+  "grid": {
+    "cols": 3,
+    "rows": 3,
+    "order": "row-major",
+    "method": "detected",
+    "requested": "detect",
+    "ok": true,
+    "reasons": [],
+    "row_gaps": [
+      [
+        392,
+        399
+      ],
+      [
+        689,
+        694
+      ],
+      [
+        997,
+        1023
+      ]
+    ],
+    "strips": [
+      {
+        "y": [
+          0,
+          392
+        ],
+        "col_gaps": [
+          [
+            522,
+            524
+          ],
+          [
+            1042,
+            1045
+          ]
+        ]
+      },
+      {
+        "y": [
+          400,
+          689
+        ],
+        "col_gaps": [
+          [
+            516,
+            519
+          ],
+          [
+            1042,
+            1045
+          ]
+        ]
+      },
+      {
+        "y": [
+          695,
+          997
+        ],
+        "col_gaps": [
+          [
+            516,
+            519
+          ],
+          [
+            1043,
+            1046
+          ]
+        ]
+      }
+    ]
+  },
+  "frame": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "fit": "contain",
+    "background": [
+      255,
+      255,
+      255
+    ]
+  },
+  "panels": [
+    {
+      "panel_id": "panel_000",
+      "index": 0,
+      "row": 0,
+      "col": 0,
+      "source_box": [
+        0,
+        0,
+        522,
+        392
+      ],
+      "source_size": [
+        522,
+        392
+      ],
+      "aspect": 1.3316,
+      "raw_path": "png-panels/panel_000.png",
+      "raw_sha256": "ccd0588cf8fcdc79f58d48d1c91b4b462f9f8feb8dc11a7b56eb0b20661f9dbf",
+      "frame_path": "frames/panel_000.png",
+      "display": {
+        "scale": 1.836735,
+        "resized": [
+          959,
+          720
+        ],
+        "offset": [
+          160,
+          0
+        ],
+        "cropped_px": 0,
+        "padded_px": [
+          321,
+          0
+        ],
+        "distortion": false,
+        "frame_size": [
+          1280,
+          720
+        ]
+      }
+    },
+    {
+      "panel_id": "panel_001",
+      "index": 1,
+      "row": 0,
+      "col": 1,
+      "source_box": [
+        525,
+        0,
+        1042,
+        392
+      ],
+      "source_size": [
+        517,
+        392
+      ],
+      "aspect": 1.3189,
+      "raw_path": "png-panels/panel_001.png",
+      "raw_sha256": "45fe7b3d23b641f7aace53c7fbf402045c2eb1eb3dfc23b249e651430c53b52f",
+      "frame_path": "frames/panel_001.png",
+      "display": {
+        "scale": 1.836735,
+        "resized": [
+          950,
+          720
+        ],
+        "offset": [
+          165,
+          0
+        ],
+        "cropped_px": 0,
+        "padded_px": [
+          330,
+          0
+        ],
+        "distortion": false,
+        "frame_size": [
+          1280,
+          720
+        ]
+      }
+    },
+    {
+      "panel_id": "panel_002",
+      "index": 2,
+      "row": 0,
+      "col": 2,
+      "source_box": [
+        1046,
+        0,
+        1536,
+        392
+      ],
+      "source_size": [
+        490,
+        392
+      ],
+      "aspect": 1.25,
+      "raw_path": "png-panels/panel_002.png",
+      "raw_sha256": "b3290ba9ccc6d16c570c55a9c5a803b02c3f871ab47d31d4128567a492cd2516",
+      "frame_path": "frames/panel_002.png",
+      "display": {
+        "scale": 1.836735,
+        "resized": [
+          900,
+          720
+        ],
+        "offset": [
+          190,
+          0
+        ],
+        "cropped_px": 0,
+        "padded_px": [
+          380,
+          0
+        ],
+        "distortion": false,
+        "frame_size": [
+          1280,
+          720
+        ]
+      }
+    },
+    {
+      "panel_id": "panel_003",
+      "index": 3,
+      "row": 1,
+      "col": 0,
+      "source_box": [
+        0,
+        400,
+        516,
+        689
+      ],
+      "source_size": [
+        516,
+        289
+      ],
+      "aspect": 1.7855,
+      "raw_path": "png-panels/panel_003.png",
+      "raw_sha256": "0618066638da6ffa60bb51143c461809da4b031869ad1fc641963a7141c5a75e",
+      "frame_path": "frames/panel_003.png",
+      "display": {
+        "scale": 2.48062,
+        "resized": [
+          1280,
+          717
+        ],
+        "offset": [
+          0,
+          1
+        ],
+        "cropped_px": 0,
+        "padded_px": [
+          0,
+          3
+        ],
+        "distortion": false,
+        "frame_size": [
+          1280,
+          720
+        ]
+      }
+    },
+    {
+      "panel_id": "panel_004",
+      "index": 4,
+      "row": 1,
+      "col": 1,
+      "source_box": [
+        520,
+        400,
+        1042,
+        689
+      ],
+      "source_size": [
+        522,
+        289
+      ],
+      "aspect": 1.8062,
+      "raw_path": "png-panels/panel_004.png",
+      "raw_sha256": "9d318ea1e402acc5ddcf4af7d81f2e4f01ebea145e88676bf7205098f1b3b03b",
+      "frame_path": "frames/panel_004.png",
+      "display": {
+        "scale": 2.452107,
+        "resized": [
+          1280,
+          709
+        ],
+        "offset": [
+          0,
+          5
+        ],
+        "cropped_px": 0,
+        "padded_px": [
+          0,
+          11
+        ],
+        "distortion": false,
+        "frame_size": [
+          1280,
+          720
+        ]
+      }
+    },
+    {
+      "panel_id": "panel_005",
+      "index": 5,
+      "row": 1,
+      "col": 2,
+      "source_box": [
+        1046,
+        400,
+        1536,
+        689
+      ],
+      "source_size": [
+        490,
+        289
+      ],
+      "aspect": 1.6955,
+      "raw_path": "png-panels/panel_005.png",
+      "raw_sha256": "0f9a8c4f41319636eaa7b05fac933841a33fbef94f41bc55ba45998ae8405191",
+      "frame_path": "frames/panel_005.png",
+      "display": {
+        "scale": 2.491349,
+        "resized": [
+          1221,
+          720
+        ],
+        "offset": [
+          29,
+          0
+        ],
+        "cropped_px": 0,
+        "padded_px": [
+          59,
+          0
+        ],
+        "distortion": false,
+        "frame_size": [
+          1280,
+          720
+        ]
+      }
+    },
+    {
+      "panel_id": "panel_006",
+      "index": 6,
+      "row": 2,
+      "col": 0,
+      "source_box": [
+        0,
+        695,
+        516,
+        997
+      ],
+      "source_size": [
+        516,
+        302
+      ],
+      "aspect": 1.7086,
+      "raw_path": "png-panels/panel_006.png",
+      "raw_sha256": "947b3f332098d9093457e2ccb5d6ba5e8c651b2e94d413148222b41c22b7d132",
+      "frame_path": "frames/panel_006.png",
+      "display": {
+        "scale": 2.384106,
+        "resized": [
+          1230,
+          720
+        ],
+        "offset": [
+          25,
+          0
+        ],
+        "cropped_px": 0,
+        "padded_px": [
+          50,
+          0
+        ],
+        "distortion": false,
+        "frame_size": [
+          1280,
+          720
+        ]
+      }
+    },
+    {
+      "panel_id": "panel_007",
+      "index": 7,
+      "row": 2,
+      "col": 1,
+      "source_box": [
+        520,
+        695,
+        1043,
+        997
+      ],
+      "source_size": [
+        523,
+        302
+      ],
+      "aspect": 1.7318,
+      "raw_path": "png-panels/panel_007.png",
+      "raw_sha256": "64f0c3913c00e7b17730306afa83b7c1e809401cdd536d2d44dc0633a64ddd8e",
+      "frame_path": "frames/panel_007.png",
+      "display": {
+        "scale": 2.384106,
+        "resized": [
+          1247,
+          720
+        ],
+        "offset": [
+          16,
+          0
+        ],
+        "cropped_px": 0,
+        "padded_px": [
+          33,
+          0
+        ],
+        "distortion": false,
+        "frame_size": [
+          1280,
+          720
+        ]
+      }
+    },
+    {
+      "panel_id": "panel_008",
+      "index": 8,
+      "row": 2,
+      "col": 2,
+      "source_box": [
+        1047,
+        695,
+        1536,
+        997
+      ],
+      "source_size": [
+        489,
+        302
+      ],
+      "aspect": 1.6192,
+      "raw_path": "png-panels/panel_008.png",
+      "raw_sha256": "ee852469b1ca91a00ac6f7e038434c528b8606c80cfb9dd46b6aebad1365b445",
+      "frame_path": "frames/panel_008.png",
+      "display": {
+        "scale": 2.384106,
+        "resized": [
+          1166,
+          720
+        ],
+        "offset": [
+          57,
+          0
+        ],
+        "cropped_px": 0,
+        "padded_px": [
+          114,
+          0
+        ],
+        "distortion": false,
+        "frame_size": [
+          1280,
+          720
+        ]
+      }
+    }
+  ],
+  "timing": {
+    "file": "timing.json",
+    "present": true,
+    "source": "measured-audio",
+    "total_duration": 139.036,
+    "gap": 0.4,
+    "lead_in": 0.3
+  },
+  "scenes": [
+    {
+      "scene_id": "scene_00",
+      "index": 0,
+      "start": 0.3,
+      "end": 11.028,
+      "display_start": 0.0,
+      "display_end": 11.428,
+      "display_duration": 11.428,
+      "text": "スタバやマックより、店が多い飲食チェーン。知っていますか？ その正体は、中国発のMIXUEです。",
+      "visual": "stores"
+    },
+    {
+      "scene_id": "scene_01",
+      "index": 1,
+      "start": 11.428,
+      "end": 22.132,
+      "display_start": 11.028,
+      "display_end": 22.532,
+      "display_duration": 11.504,
+      "text": "記事掲載価格では、台湾茶が100円、レモンティーが130円。いったい、どうしてこの価格が可能なのでしょうか。",
+      "visual": "price"
+    },
+    {
+      "scene_id": "scene_02",
+      "index": 2,
+      "start": 22.532,
+      "end": 41.756,
+      "display_start": 22.132,
+      "display_end": 42.156,
+      "display_duration": 20.024,
+      "text": "物語の始まりは1997年、中国・河南省。創業者の張紅超が始めた小さなかき氷屋台が、MIXUEの原点とされています。最初から世界を目指す巨大企業だったわけではありません。",
+      "visual": "origin"
+    },
+    {
+      "scene_id": "scene_03",
+      "index": 3,
+      "start": 42.156,
+      "end": 60.708,
+      "display_start": 41.756,
+      "display_end": 61.108,
+      "display_duration": 19.352,
+      "text": "かき氷からソフトクリームへ。そしてお茶やレモンティーへ。商品を広げながら、誰もが気軽に楽しめる価格を追求しました。特別な日の一杯ではなく、日常に寄り添う一杯を目指したのです。",
+      "visual": "products"
+    },
+    {
+      "scene_id": "scene_04",
+      "index": 4,
+      "start": 61.108,
+      "end": 78.916,
+      "display_start": 60.708,
+      "display_end": 79.316,
+      "display_duration": 18.608,
+      "text": "強みは安さだけではありません。原材料の調達から加工、物流までを効率化し、フランチャイズ方式で店舗を広げる。商品を安くするだけでなく、安く届け続ける仕組みをつくったのです。",
+      "visual": "supply"
+    },
+    {
+      "scene_id": "scene_05",
+      "index": 5,
+      "start": 79.316,
+      "end": 94.94,
+      "display_start": 78.916,
+      "display_end": 95.34,
+      "display_duration": 16.424,
+      "text": "さらに、王冠をかぶった雪だるまのようなキャラクター、雪王と、耳に残るテーマソングがSNSで話題に。商品だけでなく、ブランド自体が共有したくなるコンテンツになりました。",
+      "visual": "mascot"
+    },
+    {
+      "scene_id": "scene_06",
+      "index": 6,
+      "start": 95.34,
+      "end": 115.86,
+      "display_start": 94.94,
+      "display_end": 116.26,
+      "display_duration": 21.32,
+      "text": "MIXUEは世界規模へ成長し、日本にも進出しています。ただ、日本ではまだ店舗数は限られています。コンビニや自動販売機が身近な日本で、価格だけでなく、味や体験でも選ばれるのか。これからが注目です。",
+      "visual": "japan"
+    },
+    {
+      "scene_id": "scene_07",
+      "index": 7,
+      "start": 116.26,
+      "end": 138.436,
+      "display_start": 115.86,
+      "display_end": 139.036,
+      "display_duration": 23.176,
+      "text": "一軒の屋台から始まった商いが、世界へ。そして日本の街へ。これから店舗が増え、雪王の看板を見かける日常が来るかもしれません。大きな企業も、始まりは小さな一歩。MIXUEの次の成長ストーリーを見届けましょう。",
+      "visual": "ending"
+    }
+  ],
+  "qa": {
+    "crop": "panel-crop-qa.json",
+    "vlm": "panel-crop-vlm.json",
+    "render_requires": [
+      "crop:pass",
+      "vlm:pass"
+    ]
+  },
+  "mapping_contract": {
+    "file": "panel-map.json",
+    "shape": {
+      "mappings": [
+        {
+          "scene_id": "scene_00",
+          "panel_id": "panel_004",
+          "confidence": 0.95,
+          "reason": "short rationale"
+        }
+      ]
+    },
+    "note": "Crop QA happens before this mapping. Mapping is a separate, local-VLM step."
+  }
+}
