@@ -13,7 +13,7 @@ async def main_async(args):
         communicate=edge_tts.Communicate(scene['text'], data.get('voice','ja-JP-NanamiNeural'), rate='-5%')
         await communicate.save(str(target)); parts.append(target)
     listing=out/'concat.txt'
-    listing.write_text(''.join("file '"+p.name+"'\\n" for p in parts),encoding='utf-8')
+    listing.write_text(''.join("file '"+p.name+"'\n" for p in parts),encoding='utf-8')
     subprocess.run(['ffmpeg','-y','-f','concat','-safe','0','-i',str(listing),'-c:a','libmp3lame','-q:a','3',str(out/'narration.mp3')],check=True)
     print('Narration:',out/'narration.mp3')
 def main():
