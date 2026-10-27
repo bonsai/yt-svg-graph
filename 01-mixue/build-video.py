@@ -14,6 +14,7 @@ def main():
     ap.add_argument("--source", choices=("auto", "png", "svg"), default="auto")
     ap.add_argument("--fps", type=int, default=1)
     ap.add_argument("--duration", type=int, default=120)
+    ap.add_argument("--prepare-only", action="store_true", help="For PNG source, extract panels and manifest only")
     a = ap.parse_args()
     source = a.source
     if source == "auto":
@@ -22,6 +23,8 @@ def main():
         if not STORYBOARD.exists():
             raise SystemExit(f"PNG source selected but not found: {STORYBOARD}")
         cmd = [sys.executable, str(ROOT / "png2mov.py")]
+        if a.prepare_only:
+            cmd.append("--prepare-only")
     else:
         if not HTML_SOURCE.exists():
             raise SystemExit(f"SVG/HTML source selected but not found: {HTML_SOURCE}")
