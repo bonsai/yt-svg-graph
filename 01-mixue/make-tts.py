@@ -67,8 +67,8 @@ async def build(a):
         raise SystemExit(f"no scenes in {a.script}")
 
     out = a.out
-    voice_dir = out / "voice"
-    wav_dir = out / "voice-wav"
+    voice_dir = ROOT / "build" / "tts" / "voice"
+    wav_dir = ROOT / "build" / "tts" / "voice-wav"
     voice_dir.mkdir(parents=True, exist_ok=True)
     wav_dir.mkdir(parents=True, exist_ok=True)
 
@@ -78,7 +78,7 @@ async def build(a):
     lead_frames, gap_frames, tail_frames = (round(x * RATE) for x in (lead_in, gap, tail))
 
     voice = script.get("voice", "ja-JP-NanamiNeural")
-    cache_path = voice_dir / "cache.json"
+    cache_path = ROOT / "build" / "tts" / "cache.json"
     cache = json.loads(cache_path.read_text(encoding="utf-8")) if cache_path.exists() else {}
 
     pcm_parts = [silence(lead_frames)]
@@ -132,14 +132,15 @@ async def build(a):
         scene["display_end"] = round(next_start, 6)
         scene["display_duration"] = round(next_start - scene["display_start"], 6)
 
-    wav_path = out / "narration.wav"
+    wav_path = ROOT / "build" / "assets" / "audio" / "narration.wav"
+    wav_path.parent.mkdir(parents=True, exist_ok=True)
     with wave.open(str(wav_path), "wb") as w:
         w.setnchannels(CHANNELS)
         w.setsampwidth(SAMPLE_WIDTH)
         w.setframerate(RATE)
         w.writeframes(b"".join(pcm_parts))
 
-    mp3_path = out / "narration.mp3"
+    mp3_path = ROOT / "build" / "assets" / "audio" / "narration.mp3"
     run(["ffmpeg", "-y", "-i", wav_path, "-c:a", "libmp3lame", "-q:a", "3", mp3_path])
     cache_path.write_text(json.dumps(cache, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -154,10 +155,11 @@ async def build(a):
         "gap": gap,
         "tail": tail,
         "total_duration": round(total_duration, 6),
-        "narration": {"wav": "narration.wav", "mp3": "narration.mp3"},
+        "narration": {"wav": "assets/audio/narration.wav", "mp3": "assets/audio/narration.mp3"},
         "scenes": timing_scenes,
     }
-    timing_path = out / "timing.json"
+    timing_path = ROOT / "build" / "source" / "timing" / "timing.json"
+    timing_path.parent.mkdir(parents=True, exist_ok=True)
     timing_path.write_text(json.dumps(timing, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     print(f"\n{'scene':<9}{'speech':>8}{'start':>8}{'end':>8}{'display':>10}")
@@ -165,6 +167,10 @@ async def build(a):
         print(f"{s['scene_id']:<9}{s['duration']:>8.2f}{s['start']:>8.2f}{s['end']:>8.2f}"
               f"{s['display_duration']:>10.2f}")
     print(f"total: {total_duration:.3f}s  -> {timing_path}")
+    print(f"voice cache -> {cache_path}")
+    print(f"voice clips -> {voice_dir}")
+    print(f"wav clips -> {wav_dir}")
+    print(f"narration -> {wav_path}, {mp3_path}")
 
 
 def main():

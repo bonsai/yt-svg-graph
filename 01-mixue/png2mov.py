@@ -55,9 +55,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--image", type=Path, default=pg.DEFAULT_SOURCE)
     ap.add_argument("--script", type=Path, default=ROOT / "tts.json")
-    ap.add_argument("--timing", type=Path, default=ROOT / "build" / "timing.json")
-    ap.add_argument("--out", type=Path, default=ROOT / "build" / "mixue.mp4")
-    ap.add_argument("--panel-map", type=Path, default=ROOT / "build" / "panel-map.json")
+    ap.add_argument("--timing", type=Path, default=ROOT / "build" / "source" / "timing" / "timing.json")
+    ap.add_argument("--out", type=Path, default=ROOT / "build" / "assets" / "video" / "mixue.mp4")
+    ap.add_argument("--panel-map", type=Path, default=ROOT / "build" / "source" / "manifest" / "panel-map.json")
     ap.add_argument("--prepare-only", action="store_true",
                     help="extract panels, manifest and QA only")
     ap.add_argument("--grid", choices=("detect", "uniform"), default="detect")
@@ -117,8 +117,8 @@ def main():
         )
 
     out_dir = a.out.parent
-    panels_dir = out_dir / "png-panels"
-    frames_dir = out_dir / "frames"
+    panels_dir = ROOT / "build" / "assets" / "panels"
+    frames_dir = ROOT / "build" / "assets" / "frames"
     panels_dir.mkdir(parents=True, exist_ok=True)
     frames_dir.mkdir(parents=True, exist_ok=True)
 
@@ -139,9 +139,9 @@ def main():
             "source_box": list(box),
             "source_size": [box[2] - box[0], box[3] - box[1]],
             "aspect": round((box[2] - box[0]) / (box[3] - box[1]), 4),
-            "raw_path": raw_path.relative_to(out_dir).as_posix(),
+            "raw_path": raw_path.relative_to(ROOT / "build").as_posix(),
             "raw_sha256": pg.file_sha256(raw_path),
-            "frame_path": frame_path.relative_to(out_dir).as_posix(),
+            "frame_path": frame_path.relative_to(ROOT / "build").as_posix(),
             "display": display,
         })
 
@@ -185,8 +185,8 @@ def main():
             for i, scene in enumerate(scenes)
         ],
         "qa": {
-            "crop": "panel-crop-qa.json",
-            "vlm": "panel-crop-vlm.json",
+            "crop": "source/qa/panel-crop-qa.json",
+            "vlm": "source/qa/panel-crop-vlm.json",
             "render_requires": ["crop:pass", "vlm:pass"],
         },
         "mapping_contract": {
@@ -204,7 +204,7 @@ def main():
               f"aspect={p['aspect']} padded={p['display']['padded_px']} cropped={p['display']['cropped_px']}")
 
     # Deterministic QA runs even for --prepare-only so CI fails on bad crops.
-    qa_path = out_dir / "panel-crop-qa.json"
+    qa_path = ROOT / "build" / "source" / "qa" / "panel-crop-qa.json"
     qa_cmd = [sys.executable, str(ROOT / "panel_qa.py"), "--image", str(a.image),
               "--manifest", str(manifest_path), "--out", str(qa_path)]
     qa = subprocess.run(qa_cmd, text=True)
@@ -219,7 +219,7 @@ def main():
     if qa_report["overall"] != "pass" and not a.allow_review:
         raise SystemExit(f"crop QA is {qa_report['overall']}; pass --allow-review to render anyway")
 
-    vlm_path = out_dir / "panel-crop-vlm.json"
+    vlm_path = ROOT / "build" / "source" / "qa" / "panel-crop-vlm.json"
     vlm_state = "missing"
     if vlm_path.exists():
         vlm = load_json(vlm_path)
@@ -284,15 +284,15 @@ def main():
         if duration <= 0:
             raise SystemExit(f"invalid display duration for {scene_id}: {duration}")
         panel_index = int(mapping[scene_id].split("_")[1])
-        frame_path = (out_dir / panels[panel_index]["frame_path"]).resolve()
+        frame_path = (ROOT / "build" / panels[panel_index]["frame_path"]).resolve()
         lines.extend([f"file '{frame_path.as_posix()}'", f"duration {duration:.6f}"])
     last_index = int(mapping[scene_ids[-1]].split("_")[1])
-    lines.append(f"file '{(out_dir / panels[last_index]['frame_path']).resolve().as_posix()}'")
+    lines.append(f"file '{(ROOT / "build" / panels[last_index]['frame_path']).resolve().as_posix()}'")
     list_file.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-    audio = out_dir / "narration.wav"
+    audio = ROOT / "build" / "assets" / "audio" / "narration.wav"
     if not audio.exists():
-        audio = out_dir / "narration.mp3"
+        audio = ROOT / "build" / "assets" / "audio" / "narration.mp3"
     if not audio.exists():
         raise SystemExit("narration.wav/mp3 not found; run make-tts.py first")
 
@@ -334,12 +334,13 @@ def main():
                    and abs(audio_duration - total_duration) <= tolerance
                    and abs(drift) <= tolerance),
     }
-    write_json(out_dir / "mux-report.json", report)
+    write_json(ROOT / "build" / "source" / "mux-report.json", report)
     print(f"mux: video={video_duration:.3f}s audio={audio_duration:.3f}s "
           f"expected={total_duration:.3f}s drift={drift:+.4f}s -> {a.out}")
     if not report["ok"]:
         raise SystemExit("duration verification failed; see mux-report.json")
     print(f"created {a.out}")
+    print(f"report -> {ROOT / "build" / "source" / "mux-report.json"}")
 
 
 if __name__ == "__main__":

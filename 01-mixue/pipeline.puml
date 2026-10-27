@@ -1,0 +1,160 @@
+@startuml
+!define RECTANGLE class
+!define ROUNDRECT class
+!define DATABASE cylinder
+!define ACTOR actor
+!define QUEUE queue
+!define FILE file
+
+skinparam backgroundColor #fafafa
+skinparam componentStyle rectangle
+skinparam rectangle {
+  BackgroundColor #ffffff
+  BorderColor #333333
+  FontSize 12
+}
+skinparam file {
+  BackgroundColor #f0f0f0
+  BorderColor #666666
+}
+skinparam queue {
+  BackgroundColor #e8f5e9
+  BorderColor #2e7d32
+}
+skinparam database {
+  BackgroundColor #e3f2fd
+  BorderColor #1565c0
+}
+skinparam actor {
+  BackgroundColor #fff3e0
+  BorderColor #ef6c00
+}
+
+title **MIXUE Pipeline — 01-mixue**\n(2min JP explainer video from storyboard PNG)
+
+package "Source Assets" {
+  [storyboard.png] as storyboard
+  [tts.json] as script
+}
+
+package "Stage 1: TTS & Timing" {
+  [make-tts.py] as make_tts
+  FILE "build/tts/cache.json" as tts_cache
+  FILE "build/tts/voice/voice_XX.mp3" as tts_mp3
+  FILE "build/tts/voice-wav/voice_XX.wav" as tts_wav
+  FILE "build/assets/audio/narration.wav" as narration_wav
+  FILE "build/assets/audio/narration.mp3" as narration_mp3
+  FILE "build/source/timing/timing.json" as timing_json
+}
+
+package "Stage 2: Panel Extraction" {
+  [panel_grid.py] as panel_grid
+  [png2mov.py --prepare-only] as png2mov_prep
+  FILE "build/assets/panels/panel_XXX.png" as raw_panels
+  FILE "build/assets/frames/panel_XXX.png" as display_frames
+  FILE "build/source/manifest/panel-manifest.json" as manifest
+}
+
+package "Stage 3: Mechanical QA" {
+  [panel_qa.py] as panel_qa
+  FILE "build/source/qa/panel-crop-qa.json" as qa_json
+}
+
+package "Stage 4: Semantic QA (VLM)" {
+  ACTOR "LM Studio\n(tempura-qwen2.5-vl-3b)" as vlm
+  [qa_vlm.py] as qa_vlm
+  FILE "build/source/qa/panel-crop-vlm.json" as vlm_json
+}
+
+package "Stage 5: Mapping" {
+  FILE "build/source/manifest/panel-map.json" as panel_map
+}
+
+package "Stage 6: Mux & Render" {
+  [png2mov.py] as png2mov
+  [normalize_panels.py] as normalize
+  FILE "build/assets/video/mixue.mp4" as final_mp4
+  FILE "build/source/mux-report.json" as mux_report
+  FILE "build/panel/normalized/index.html" as normalized_preview
+  FILE "build/panel/inspect/index.html" as inspect_preview
+  FILE "build/panel/inspect" as panel_inspect
+}
+
+package "CI / Delivery" {
+  [.github/workflows/build-video.yml] as workflow
+  [GitHub Artifacts] as artifacts
+  [GitHub Release] as release
+}
+
+' === Flows ===
+
+storyboard --> panel_grid : "detect gutters (white rows/cols)"
+storyboard --> png2mov_prep : "crop 3x3 panels"
+script --> make_tts : "8 scenes, ja-JP-NanamiNeural"
+make_tts --> tts_cache
+make_tts --> tts_mp3
+make_tts --> tts_wav
+make_tts --> narration_wav
+make_tts --> narration_mp3
+make_tts --> timing_json
+
+png2mov_prep --> raw_panels
+png2mov_prep --> display_frames
+png2mov_prep --> manifest
+
+manifest --> panel_qa
+raw_panels --> panel_qa
+panel_qa --> qa_json
+
+manifest --> qa_vlm
+raw_panels --> qa_vlm
+qa_vlm --> vlm : "base64 PNG + prompt"
+vlm --> qa_vlm : "cut/bleed/completeness"
+qa_vlm --> vlm_json
+
+panel_map --> png2mov
+
+timing_json --> png2mov
+display_frames --> png2mov
+narration_wav --> png2mov
+png2mov --> final_mp4
+png2mov --> mux_report
+
+manifest --> normalize
+normalize --> normalized_preview
+
+manifest --> panel_inspect : "comparison galleries"
+panel_inspect --> inspect_preview
+
+workflow --> make_tts
+workflow --> png2mov_prep
+workflow --> panel_qa
+workflow --> qa_vlm : "skipped in CI (needs local GPU)"
+workflow --> artifacts
+artifacts --> release : "on tag push"
+
+note right of panel_grid
+  Detects white gutter rows/cols
+  Falls back to uniform grid
+  Records method in manifest
+end note
+
+note right of panel_qa
+  gutter_cross, coverage, border_ring,
+  aspect_spread, overwrite_detect
+  → pass / review / fail
+end note
+
+note right of qa_vlm
+  LM Studio local VLM
+  Evaluates: cut, bleed, completeness
+  → pass / review / fail
+end note
+
+note right of png2mov
+  ffmpeg concat + mux
+  Drift check ±0.12s
+  Normalized preview (640x360)
+end note
+
+@enduml

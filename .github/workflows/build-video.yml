@@ -1,56 +1,85 @@
 name: Build video assets
+
 on:
   workflow_dispatch:
-    inputs:
-      source:
-        description: "Video source (auto prefers the storyboard PNG)"
-        required: true
-        default: auto
-        type: choice
-        options:
-          - auto
-          - png
-          - svg
   push:
     paths:
       - '01-mixue/**'
       - '.github/workflows/build-video.yml'
+
 permissions:
-  contents: read
+  contents: write
+
 jobs:
-  build-mixue:
+  build:
+    name: Build 01-mixue
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install system tools
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
-      - name: Install Python dependencies and browser
+          cache: 'pip'
+          cache-dependency-path: '01-mixue/requirements.txt'
+
+      - name: Install system deps
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r 01-mixue/requirements.txt
-          python -m playwright install --with-deps chromium
-      - name: Generate Japanese TTS
-        run: python 01-mixue/make-tts.py
-      - name: Prepare PNG panels for local VLM (or build SVG video)
-        env:
-          VIDEO_SOURCE: ${{ github.event.inputs.source || 'auto' }}
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg plantuml
+
+      - name: Install Python deps
         run: |
-          if [ "$VIDEO_SOURCE" = "png" ] || { [ "$VIDEO_SOURCE" = "auto" ] && [ -f "01-mixue/MIXUE世界展開ストーリーボード展開.png" ]; }; then
-            python 01-mixue/build-video.py --source png --prepare-only
-          else
-            python 01-mixue/build-video.py --source svg --fps 1 --duration 120
-          fi
-      - name: Upload build artifact (not YouTube)
+          pip install -r 01-mixue/requirements.txt
+          # edge-tts, playwright, pillow, numpy
+
+      - name: Install Playwright browsers
+        run: playwright install chromium
+
+      - name: Run TTS (generate audio + timing.json)
+        working-directory: 01-mixue
+        run: |
+          python make-tts.py
+
+      - name: Extract panels + QA (prepare-only)
+        working-directory: 01-mixue
+        run: |
+          python png2mov.py --prepare-only
+
+      - name: Verify mechanical QA
+        working-directory: 01-mixue
+        run: |
+          python -c "
+import json
+with open('build/source/qa/panel-crop-qa.json') as f:
+    qa = json.load(f)
+print(f'Mechanical QA: {qa[\"overall\"]}  pass={qa[\"summary\"][\"pass\"]} review={qa[\"summary\"][\"review\"]} fail={qa[\"summary\"][\"fail\"]}')
+if qa['overall'] == 'fail':
+    exit(1)
+"
+
+      - name: Generate PlantUML diagram
+        working-directory: 01-mixue
+        run: |
+          plantuml -tsvg pipeline.puml -o build/assets/diagrams
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: 01-mixue-video
+          name: mixue-video-assets
           path: |
-            01-mixue/build/
-          if-no-files-found: error
-          retention-days: 14
+            01-mixue/build/assets/**/*
+            01-mixue/build/source/**/*
+            01-mixue/build/tts/**/*
+            01-mixue/build/panel/**/*
+          retention-days: 7
+
+      - name: Create release (on tag push)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: 01-mixue/build/assets/video/mixue.mp4
+          generate_release_notes: true
