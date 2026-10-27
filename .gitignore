@@ -1,0 +1,7 @@
+# Generated build outputs (panels, TTS, video, preview galleries)
+01-mixue/build/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
