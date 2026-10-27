@@ -37,16 +37,20 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Generate Japanese TTS
         run: python 01-mixue/make-tts.py
-      - name: Route source and build MP4
+      - name: Prepare PNG panels for local VLM (or build SVG video)
         env:
           VIDEO_SOURCE: ${{ github.event.inputs.source || 'auto' }}
-        run: python 01-mixue/build-video.py --source "$VIDEO_SOURCE" --fps 1 --duration 120
+        run: |
+          if [ "$VIDEO_SOURCE" = "png" ] || { [ "$VIDEO_SOURCE" = "auto" ] && [ -f "01-mixue/MIXUE世界展開ストーリーボード展開.png" ]; }; then
+            python 01-mixue/build-video.py --source png --prepare-only
+          else
+            python 01-mixue/build-video.py --source svg --fps 1 --duration 120
+          fi
       - name: Upload build artifact (not YouTube)
         uses: actions/upload-artifact@v4
         with:
           name: 01-mixue-video
           path: |
-            01-mixue/build/mixue.mp4
-            01-mixue/build/narration.mp3
+            01-mixue/build/
           if-no-files-found: error
           retention-days: 14
