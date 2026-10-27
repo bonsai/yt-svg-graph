@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>スタバ・マック超え！？MIXUE 2分解説</title>
+<style>
+:root{--navy:#08162d;--red:#ed2939;--yellow:#ffd84d;--ice:#dff7ff;--white:#fff;--muted:#b7c7dc}*{box-sizing:border-box}body{margin:0;background:#050b17;color:var(--white);font-family:system-ui,-apple-system,"Yu Gothic UI",Meiryo,sans-serif}main{max-width:1100px;margin:auto;padding:18px}.eyebrow{color:var(--yellow);font-weight:800;letter-spacing:.14em;font-size:.8rem}h1{font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.12;margin:.35em 0}.intro{color:var(--muted);max-width:75ch}.frame{border:1px solid #34425a;border-radius:18px;overflow:hidden;background:var(--navy);box-shadow:0 20px 60px #0008}svg{width:100%;height:auto;display:block;aspect-ratio:16/9;background:var(--navy)}.controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap;padding:12px;background:#0d1729}button{border:0;border-radius:999px;padding:10px 16px;background:var(--yellow);color:#111827;font-weight:850;cursor:pointer}button.alt{background:#26364f;color:white}input[type=range]{flex:1;min-width:120px;accent-color:var(--yellow)}#clock{font-variant-numeric:tabular-nums;color:var(--yellow);font-weight:800}.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-top:14px}.panel{border:1px solid #2b3b54;border-radius:14px;background:#101b2e;padding:16px}.panel h2{font-size:1.1rem;margin:0 0 10px}.script{font-size:1rem;line-height:1.8;white-space:pre-wrap}.muted{color:var(--muted);font-size:.9rem}.scenes{display:grid;grid-template-columns:1fr 1fr;gap:7px}.scenes button{background:#1a2941;color:#fff;border:1px solid #334661;border-radius:9px;text-align:left;padding:9px;font-size:.83rem}.scenes button.active{border-color:var(--yellow);background:#443a1c}#bars .bar,#priceBars rect{transition:y .7s ease,height .7s ease}footer{padding:20px 0;color:var(--muted);font-size:.82rem}@media(max-width:760px){main{padding:10px}.grid{grid-template-columns:1fr}.scenes{grid-template-columns:1fr 1fr}}
+</style></head>
+<body><main>
+<div class="eyebrow">2 MINUTES · SVG MOTION GRAPHICS · YOUTUBE STORY</div>
+<h1>スタバ・マック超え！？<br>小さな屋台から世界へ、MIXUE</h1>
+<p class="intro">再生ボタンで約2分のSVGアニメーションをプレビュー。冒頭にグラフは2つだけ。以降は創業の原点と成長の仕組みを物語として見せます。</p>
+<section class="frame">
+<svg id="screen" viewBox="0 0 960 540" role="img" aria-label="MIXUE 2分動画アニメーション">
+<defs>
+ <linearGradient id="night" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07152c"/><stop offset="1" stop-color="#174a79"/></linearGradient>
+ <linearGradient id="redGrad" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ff5361"/><stop offset="1" stop-color="#cf172b"/></linearGradient>
+ <linearGradient id="cupGrad" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#cdefff"/></linearGradient>
+ <filter id="shadow"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#000" flood-opacity=".3"/></filter>
+</defs>
+<rect width="960" height="540" fill="url(#night)"/>
+<circle cx="825" cy="100" r="185" fill="#e9273c" opacity=".16"/><circle cx="100" cy="490" r="230" fill="#18a3d2" opacity=".12"/>
+<g id="stars" fill="#ffd84d"><circle cx="70" cy="70" r="4"/><circle cx="895" cy="240" r="5"/><circle cx="420" cy="55" r="3"/><circle cx="820" cy="455" r="4"/><circle cx="500" cy="475" r="3"/></g>
+<!-- graph 1 -->
+<g id="graph1" opacity="0">
+ <text x="55" y="65" fill="#ffd84d" font-size="20" font-weight="900" letter-spacing="2">GRAPH 01 · STORE COUNT</text>
+ <text x="55" y="120" fill="#fff" font-size="42" font-weight="950">スタバ・マックより店が多い！？</text>
+ <text x="58" y="162" fill="#b7c7dc" font-size="18">世界の店舗数（概数・基準日は各社で異なる）</text>
+ <line x1="100" y1="420" x2="830" y2="420" stroke="#70839e" stroke-width="2"/>
+ <g id="bars">
+  <rect class="bar" x="170" y="420" width="130" height="0" rx="8" fill="url(#redGrad)"/><rect class="bar" x="415" y="420" width="130" height="0" rx="8" fill="#f5c934"/><rect class="bar" x="660" y="420" width="130" height="0" rx="8" fill="#28a66b"/>
+  <text x="235" y="405" text-anchor="middle" fill="#fff" font-size="25" font-weight="900" class="val">約6.4万店</text><text x="480" y="405" text-anchor="middle" fill="#fff" font-size="25" font-weight="900" class="val">約4.4万店</text><text x="725" y="405" text-anchor="middle" fill="#fff" font-size="25" font-weight="900" class="val">約4万店</text>
+  <text x="235" y="465" text-anchor="middle" fill="#fff" font-size="22" font-weight="900">MIXUE</text><text x="480" y="465" text-anchor="middle" fill="#fff" font-size="19" font-weight="800">McDonald's</text><text x="725" y="465" text-anchor="middle" fill="#fff" font-size="19" font-weight="800">Starbucks</text>
+ </g>
+ <rect x="55" y="490" width="850" height="30" rx="15" fill="#fff" opacity=".1"/><text x="480" y="511" text-anchor="middle" fill="#ffd84d" font-size="17" font-weight="800">この巨大チェーン、始まりは小さな屋台。</text>
+</g>
+<!-- graph 2 -->
+<g id="graph2" opacity="0">
+ <text x="55" y="65" fill="#ffd84d" font-size="20" font-weight="900" letter-spacing="2">GRAPH 02 · PRICE SHOCK</text><text x="55" y="120" fill="#fff" font-size="44" font-weight="950">ドリンク、100円台から。</text>
+ <text x="58" y="160" fill="#b7c7dc" font-size="18">記事掲載価格の例／カフェドリンクは一般的な価格帯のイメージ</text>
+ <line x1="105" y1="420" x2="830" y2="420" stroke="#70839e" stroke-width="2"/>
+ <g id="priceBars"><rect x="180" y="420" width="130" height="0" rx="8" fill="#ed2939"/><rect x="420" y="420" width="130" height="0" rx="8" fill="#ffd84d"/><rect x="660" y="420" width="130" height="0" rx="8" fill="#4eb6f0"/></g>
+ <text x="245" y="405" text-anchor="middle" fill="#fff" font-size="27" font-weight="950">¥100</text><text x="485" y="405" text-anchor="middle" fill="#fff" font-size="27" font-weight="950">¥130</text><text x="725" y="405" text-anchor="middle" fill="#fff" font-size="27" font-weight="950">約¥500</text>
+ <text x="245" y="463" text-anchor="middle" fill="#fff" font-size="21" font-weight="850">台湾茶</text><text x="485" y="463" text-anchor="middle" fill="#fff" font-size="21" font-weight="850">レモンティー</text><text x="725" y="463" text-anchor="middle" fill="#fff" font-size="19" font-weight="850">カフェドリンク例</text>
+ <text x="480" y="510" text-anchor="middle" fill="#ffd84d" font-size="20" font-weight="900">なぜ、この価格で売れる？</text>
+</g>
+<!-- story panels -->
+<g id="story" opacity="0">
+ <g id="stall" opacity="0">
+  <rect x="560" y="220" width="280" height="170" rx="10" fill="#f5f0e4" filter="url(#shadow)"/><path d="M540 230 L700 145 L860 230 Z" fill="#ed2939" stroke="#fff" stroke-width="4"/><path d="M565 230 V380 M835 230 V380" stroke="#fff" stroke-width="8"/><rect x="610" y="270" width="180" height="70" rx="8" fill="#fff"/><text x="700" y="300" text-anchor="middle" fill="#d51e32" font-size="26" font-weight="950">蜜雪冰城</text><text x="700" y="326" text-anchor="middle" fill="#17233a" font-size="15" font-weight="800">1997 · 河南省</text><path d="M650 355 Q700 330 750 355 L735 380 H665 Z" fill="#dff7ff" stroke="#9bdcf5" stroke-width="3"/>
+ </g>
+ <g id="cup" opacity="0" transform="translate(700 290)"><path d="M-72 -50 H72 L55 135 Q0 160 -55 135 Z" fill="url(#cupGrad)" stroke="#fff" stroke-width="4"/><ellipse cx="0" cy="-50" rx="72" ry="15" fill="#fff"/><path d="M-48 15 Q0 35 48 15" fill="none" stroke="#ed2939" stroke-width="12"/><text x="0" y="80" text-anchor="middle" fill="#ed2939" font-size="25" font-weight="950">MIXUE</text><path d="M-10 -60 L25 -150" stroke="#ffd84d" stroke-width="10" stroke-linecap="round"/></g>
+ <g id="network" opacity="0"><circle cx="700" cy="300" r="120" fill="#122c4b" stroke="#53d5f5" stroke-width="3"/><path d="M600 290 Q650 220 700 280 T800 290 M620 340 Q680 300 740 350 M700 180 Q660 300 700 420 M750 190 Q790 300 730 410" fill="none" stroke="#53d5f5" stroke-width="3"/><g fill="#ffd84d"><circle cx="625" cy="280" r="8"/><circle cx="745" cy="245" r="8"/><circle cx="750" cy="350" r="8"/><circle cx="670" cy="370" r="8"/></g></g>
+ <g id="mascot" opacity="0" transform="translate(700 290)"><circle cx="0" cy="-55" r="34" fill="#fff" stroke="#cdefff" stroke-width="4"/><circle cx="0" cy="20" r="58" fill="#fff" stroke="#cdefff" stroke-width="4"/><path d="M-28 -85 L-20 -125 L20 -125 L29 -85 Z" fill="#ed2939" stroke="#fff" stroke-width="3"/><rect x="-33" y="-96" width="66" height="8" rx="4" fill="#ffd84d"/><circle cx="-12" cy="-58" r="4" fill="#15243a"/><circle cx="12" cy="-58" r="4" fill="#15243a"/><path d="M-10 -43 Q0 -34 10 -43" fill="none" stroke="#ed2939" stroke-width="4"/><path d="M-44 17 Q0 43 44 17" fill="none" stroke="#ed2939" stroke-width="10"/></g>
+</g>
+<text id="kicker" x="55" y="78" fill="#ffd84d" font-size="20" font-weight="900" letter-spacing="2">2 MINUTES</text><text id="headline" x="55" y="160" fill="#fff" font-size="43" font-weight="950">スタバ・マック超え！？</text><text id="subhead" x="58" y="210" fill="#d9e8f8" font-size="23">世界最大級の飲食チェーン、その正体は？</text>
+<g id="snowIcon" transform="translate(780 300)"><circle cx="0" cy="0" r="95" fill="#ed2939" opacity=".9"/><circle cx="0" cy="-15" r="40" fill="#fff"/><circle cx="0" cy="38" r="52" fill="#fff"/><path d="M-27 -49 L-18 -88 L18 -88 L27 -49 Z" fill="#d81e32" stroke="#fff" stroke-width="3"/><rect x="-32" y="-60" width="64" height="8" rx="4" fill="#ffd84d"/><circle cx="-13" cy="-17" r="4" fill="#17233a"/><circle cx="13" cy="-17" r="4" fill="#17233a"/><path d="M-10 -3 Q0 7 10 -3" fill="none" stroke="#ed2939" stroke-width="4"/></g>
+<rect x="0" y="526" width="960" height="14" fill="#24344b"/><rect id="progress" x="0" y="526" width="0" height="14" fill="#ffd84d"/>
+</svg>
+<div class="controls"><button id="play">▶ 再生</button><button class="alt" id="restart">↺ 最初から</button><input id="seek" type="range" min="0" max="120" value="0" step="1" aria-label="再生位置"><span id="clock">00:00 / 02:00</span></div>
+</section>
+<div class="grid"><section class="panel"><h2>🎙 ナレーション</h2><p class="muted" id="sceneLabel">Scene 1 / 8</p><div class="script" id="script"></div><p class="muted">このHTMLは絵コンテ兼アニメーションプレビューです。YouTube用の完成動画にするには、ナレーション音声とBGMを録音・合成してMP4に書き出してください。</p><button id="copy" class="alt">全原稿をコピー</button></section><section class="panel"><h2>シーン一覧</h2><div class="scenes" id="scenes"></div><p class="muted">SVGとJavaScriptのみで動作。外部ライブラリ不要。</p></section></div>
+<section class="panel" style="margin-top:14px"><h2>公開前の確認</h2><ul><li>店舗数はMIXUEの2026年6月末約64,000店、他社は異なる基準日の概数として表示。厳密な同日比較ではないことを画面に明記。</li><li>価格は提示記事掲載値。日本の販売価格は店舗・時期で変わる可能性があるため公開前に確認。</li><li>「日本でこれから増える」は予測として表現し、確定事項のように断言しない。</li><li>ロゴ・雪王・店舗写真は使用許諾を確認。現在の図形はオリジナルの簡易イラスト。</li></ul></section>
+<footer>Standalone HTML · SVG motion graphics · 120 seconds · 2 charts only</footer>
+</main>
+<script>
+const scenes=[
+{start:0,end:8,title:'スタバ・マック超え！？',sub:'世界最大級の飲食チェーン、その正体は？',visual:'intro',script:'スタバやマックより、店が多い飲食チェーン。知ってますか？ その正体は、中国発のMIXUEです。'},
+{start:8,end:16,title:'ドリンク、100円台から。',sub:'なぜ、この価格で売れる？',visual:'graph2',script:'記事掲載価格では、台湾茶が100円、レモンティーが130円。いったい、どうしてこの価格が可能なのでしょうか。'},
+{start:16,end:31,title:'始まりは、小さな屋台。',sub:'1997年・中国 河南省',visual:'stall',script:'物語の始まりは1997年、中国・河南省。創業者の張紅超が始めた小さなかき氷屋台が、MIXUEの原点とされています。最初から世界を目指す巨大企業だったわけではありません。'},
+{start:31,end:47,title:'誰もが楽しめる価格へ。',sub:'かき氷から、ソフトクリームとドリンクへ',visual:'cup',script:'かき氷からソフトクリームへ。そしてお茶やレモンティーへ。商品を広げながら、誰もが気軽に楽しめる価格を追求しました。特別な日の一杯ではなく、日常に寄り添う一杯を目指したのです。'},
+{start:47,end:65,title:'安さを支える仕組み。',sub:'調達・加工・物流を効率化',visual:'network',script:'強みは安さだけではありません。原材料の調達から加工、物流までを効率化し、フランチャイズ方式で店舗を広げる。商品を安くするだけでなく、安く届け続ける仕組みをつくったのです。'},
+{start:65,end:81,title:'雪王が、世界をつなぐ。',sub:'キャラクターとSNSの力',visual:'mascot',script:'さらに、王冠をかぶった雪だるまのようなキャラクター「雪王」と、耳に残るテーマソングがSNSで話題に。商品だけでなく、ブランド自体が共有したくなるコンテンツになりました。'},
+{start:81,end:101,title:'そして、日本へ。',sub:'まだ少ない店舗。ここから広がるのか？',visual:'japan',script:'MIXUEは世界規模へ成長し、日本にも進出しています。ただ、日本ではまだ店舗数は限られています。コンビニや自動販売機が身近な日本で、価格だけでなく、味や体験でも選ばれるのか。これからが注目です。'},
+{start:101,end:120,title:'小さな屋台から、日本の街へ。',sub:'MIXUEの次の物語は、これから。',visual:'end',script:'一軒の屋台から始まった商いが、世界へ。そして日本の街へ。これから店舗が増え、雪王の看板を見かける日常が来るかもしれません。大きな企業も、始まりは小さな一歩。MIXUEの次の成長ストーリーを見届けましょう。'}
+];
+const $=id=>document.getElementById(id);let elapsed=0,playing=false,raf=0,stamp=0,active=-1;
+function fmt(n){n=Math.max(0,Math.min(120,Math.floor(n)));return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')}
+function showScene(i){if(i===active)return;active=i;const s=scenes[i];$('headline').textContent=s.title;$('subhead').textContent=s.sub;$('kicker').textContent=`SCENE ${String(i+1).padStart(2,'0')} / 08`;$('script').textContent=s.script;$('sceneLabel').textContent=`Scene ${i+1} / 8 · ${fmt(s.start)}–${fmt(s.end)}`;
+['graph1','graph2','story','stall','cup','network','mascot'].forEach(id=>$(id).setAttribute('opacity','0'));
+$('snowIcon').setAttribute('opacity','1');$('kicker').setAttribute('opacity','1');$('headline').setAttribute('opacity','1');$('subhead').setAttribute('opacity','1');
+if(i===0){$('graph1').setAttribute('opacity','1');$('snowIcon').setAttribute('opacity','0');$('kicker').setAttribute('opacity','0');$('headline').setAttribute('opacity','0');$('subhead').setAttribute('opacity','0');animateBars1()}
+else if(i===1){$('graph2').setAttribute('opacity','1');$('snowIcon').setAttribute('opacity','0');$('kicker').setAttribute('opacity','0');$('headline').setAttribute('opacity','0');$('subhead').setAttribute('opacity','0');animateBars2()}
+else{$('story').setAttribute('opacity','1');$('snowIcon').setAttribute('opacity',i===7?'1':'0');if(s.visual==='stall')$('stall').setAttribute('opacity','1');if(s.visual==='cup')$('cup').setAttribute('opacity','1');if(s.visual==='network')$('network').setAttribute('opacity','1');if(s.visual==='mascot')$('mascot').setAttribute('opacity','1');if(s.visual==='japan'){ $('network').setAttribute('opacity','1');$('headline').textContent='そして、日本へ。';$('subhead').textContent='東京・横浜・大阪など。まだ始まったばかり。';$('network').setAttribute('transform','translate(0 0) scale(1)');}if(s.visual==='end'){$('cup').setAttribute('opacity','1');$('cup').setAttribute('transform','translate(700 290) scale(.8)')}}
+$('scenes').querySelectorAll('button').forEach((b,j)=>b.classList.toggle('active',j===i));}
+function animateBars1(){const vals=[220,151,138];document.querySelectorAll('#bars .bar').forEach((r,i)=>{r.setAttribute('y',420-vals[i]);r.setAttribute('height',vals[i])})}
+function animateBars2(){const vals=[80,104,250];document.querySelectorAll('#priceBars rect').forEach((r,i)=>{r.setAttribute('y',420-vals[i]);r.setAttribute('height',vals[i])})}
+function render(t){elapsed=Math.max(0,Math.min(120,t));const i=Math.min(7,scenes.findIndex(s=>elapsed>=s.start&&elapsed<s.end)===-1?7:scenes.findIndex(s=>elapsed>=s.start&&elapsed<s.end));showScene(i);$('seek').value=elapsed;$('clock').textContent=`${fmt(elapsed)} / 02:00`;$('progress').setAttribute('width',960*elapsed/120);$('stars').setAttribute('opacity',.55+.45*Math.abs(Math.sin(elapsed*1.3)));$('snowIcon').setAttribute('transform',`translate(780 ${300+Math.sin(elapsed*2)*8})`);$('cup').setAttribute('transform',`translate(700 ${290+Math.sin(elapsed*2)*5})`)}
+function tick(now){if(!playing)return;elapsed=(now-stamp)/1000;render(elapsed);if(elapsed>=120){playing=false;$('play').textContent='▶ 再生';return}raf=requestAnimationFrame(tick)}function pause(){playing=false;if(raf)cancelAnimationFrame(raf);$('play').textContent='▶ 再生'}
+$('play').addEventListener('click',()=>{if(playing){pause();return}if(elapsed>=120)elapsed=0;playing=true;stamp=performance.now()-elapsed*1000;$('play').textContent='Ⅱ 一時停止';raf=requestAnimationFrame(tick)});$('restart').addEventListener('click',()=>{pause();render(0)});$('seek').addEventListener('input',e=>{pause();render(+e.target.value)});
+scenes.forEach((s,i)=>{const b=document.createElement('button');b.textContent=`${fmt(s.start)} · ${s.title}`;b.addEventListener('click',()=>{pause();render(s.start)});$('scenes').appendChild(b)});
+$('copy').addEventListener('click',async()=>{const t=scenes.map(s=>`【${fmt(s.start)}–${fmt(s.end)}】${s.title}\n${s.script}`).join('\n\n');try{await navigator.clipboard.writeText(t);$('copy').textContent='コピーしました'}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();$('copy').textContent='コピーしました'}});render(0);
+</script></body></html>
