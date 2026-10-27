@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Split a storyboard PNG into panels and turn them into a narrated MP4.
 
-Default grid is 4x2, with panel order matched to scenes in tts.json.
+Default grid is 3x3. All nine panels are extracted; video timing uses scenes defined in tts.json.
 """
 from pathlib import Path
 import argparse
@@ -19,8 +19,8 @@ def main():
     ap.add_argument("--image", type=Path, default=ROOT / "MIXUE世界展開ストーリーボード展開.png")
     ap.add_argument("--script", type=Path, default=ROOT / "tts.json")
     ap.add_argument("--out", type=Path, default=ROOT / "build" / "mixue.mp4")
-    ap.add_argument("--cols", type=int, default=4)
-    ap.add_argument("--rows", type=int, default=2)
+    ap.add_argument("--cols", type=int, default=3)
+    ap.add_argument("--rows", type=int, default=3)
     ap.add_argument("--fps", type=int, default=30)
     ap.add_argument("--width", type=int, default=1280)
     ap.add_argument("--height", type=int, default=720)
@@ -41,8 +41,9 @@ def main():
     image = Image.open(a.image).convert("RGB")
     w, h = image.size
     list_file = a.out.parent / "png-scenes.txt"
-    lines, total_duration = [], 0.0
-    for i, scene in enumerate(scenes):
+    # Extract every grid cell as a reusable asset, including cells without a narration scene.
+    panel_paths = []
+    for i in range(a.cols * a.rows):
         col, row = i % a.cols, i // a.cols
         panel = image.crop((round(col*w/a.cols), round(row*h/a.rows),
                             round((col+1)*w/a.cols), round((row+1)*h/a.rows)))
@@ -59,13 +60,18 @@ def main():
         panel = panel.resize((a.width, a.height), Image.Resampling.LANCZOS)
         panel_path = panels_dir / f"panel_{i:03d}.png"
         panel.save(panel_path)
+        panel_paths.append(panel_path)
+
+    lines, total_duration = [], 0.0
+    for i, scene in enumerate(scenes):
+        panel_path = panel_paths[i]
         duration = float(scene["end"]) - float(scene["start"])
         if duration <= 0:
             raise SystemExit(f"Invalid scene duration for scene {i}: {duration}")
         total_duration += duration
         lines.extend([f"file '{panel_path.resolve().as_posix()}'", f"duration {duration:.3f}"])
     # Repeat final still so concat demuxer respects its duration.
-    lines.append(f"file '{(panels_dir / f'panel_{len(scenes)-1:03d}.png').resolve().as_posix()}'")
+    lines.append(f"file '{panel_paths[len(scenes)-1].resolve().as_posix()}'")
     list_file.write_text("\n".join(lines) + "\n", encoding="utf-8")
     silent = a.out.with_name(a.out.stem + "-silent.mp4")
     run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", list_file,
