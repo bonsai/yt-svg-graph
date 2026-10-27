@@ -1,6 +1,16 @@
 name: Build video assets
 on:
   workflow_dispatch:
+    inputs:
+      source:
+        description: "Video source (auto prefers the storyboard PNG)"
+        required: true
+        default: auto
+        type: choice
+        options:
+          - auto
+          - png
+          - svg
   push:
     paths:
       - '01-mixue/**'
@@ -27,10 +37,10 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Generate Japanese TTS
         run: python 01-mixue/make-tts.py
-      - name: Render SVG/HTML frames
-        run: python 01-mixue/divide-img.py --fps 1 --duration 120
-      - name: Assemble MP4
-        run: python 01-mixue/mux.py --fps 1 --duration 120
+      - name: Route source and build MP4
+        env:
+          VIDEO_SOURCE: ${{ github.event.inputs.source || 'auto' }}
+        run: python 01-mixue/build-video.py --source "$VIDEO_SOURCE" --fps 1 --duration 120
       - name: Upload build artifact (not YouTube)
         uses: actions/upload-artifact@v4
         with:
